@@ -16,7 +16,7 @@ if (isset($_GET["page"])) {
 //display 20 items per page
 $start_from = ($page - 1) * 20;
 //sql statement  
-$sql = (" SELECT servicename, pph, avgcost FROM `services` WHERE pph IS NOT NULL LIMIT $start_from, 20 ");
+$sql = (" SELECT servicename, pph, avgcost FROM `services` WHERE pph IS NOT NULL ORDER BY servicename LIMIT $start_from, 20 ");
 //execution and result of query
 $result = selectquery($sql, $dbh);
 ?>
