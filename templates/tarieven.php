@@ -16,7 +16,7 @@ if (isset($_GET["page"])) {
 //display 20 items per page
 $start_from = ($page - 1) * 20;
 //sql statement  
-$sql = (" SELECT servicename, pph, avgcost FROM `services` WHERE pph IS NOT NULL LIMIT $start_from, 20 ");
+$sql = (" SELECT servicename, pph, avgcost FROM `services` WHERE pph IS NOT NULL ORDER BY servicename LIMIT $start_from, 20 ");
 //execution and result of query
 $result = selectquery($sql, $dbh);
 ?>
@@ -25,6 +25,7 @@ $result = selectquery($sql, $dbh);
     <div id="ratewarning">
         <p>De prijzen die hier staan zijn geschatte prijzen voor gesprekken of diensten.
             <br/>Ook het uurtarief wordt hierbij weergeven</p>
+	<hr>
     </div>
         <!--Table-->
         <table>
@@ -46,9 +47,9 @@ $result = selectquery($sql, $dbh);
     		    <!--Display servicename -->
     		    <td class="ratetablecollumn"><?php echo($row["servicename"]) ?></td>
     		    <!--Display price per hour -->
-    		    <td class="ratetablecollumn"><?php echo($row["pph"]) ?></td>
+    		    <td class="ratetablecollumn"><?php echo('€ '.$row["pph"]) ?></td>
     		    <!--Display average cost-->
-    		    <td class="ratetablecollumn"><?php echo($row["avgcost"]) ?></td>
+    		    <td class="ratetablecollumn"><?php echo('€ '.$row["avgcost"]) ?></td>
     		</tr>
 		<?php } ?>
             </tbody>

@@ -27,7 +27,7 @@ if(isset($_POST['submit']))
             $dbh = connectToDatabase(); // Database verbinding wordt aangemaakt en vastgelegd in $dbh
 
             $user = $_POST['login'];   
-            $pass = $_POST['password'];
+            $pass = hash('sha256', $_POST['password']);
 
             $sth = $dbh->prepare("SELECT * FROM users WHERE username=:user AND password=:pass");
             $sth->bindParam(":user", $user);

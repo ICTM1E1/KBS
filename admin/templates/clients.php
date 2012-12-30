@@ -11,7 +11,7 @@ if(isset($_POST['search']) && !empty($_POST['search'])) {
   $search = "%".$_POST['search']."%";
   $sth = $dbh->prepare("SELECT ID,username,name,email FROM clients WHERE username LIKE :search OR email LIKE :search");
   $sth->bindParam(":search", $search);
-  $sth->execute(array(":search" => $_POST['search']));
+  $sth->execute();
   
   $res = $sth->fetchAll(PDO::FETCH_ASSOC);
   
@@ -25,7 +25,6 @@ if(isset($_POST['search']) && !empty($_POST['search'])) {
 ?>
 
 <form action="" method="post">
-    <br/>
     <input type="button" onclick="window.location = '/admin/clients/new'" value="Nieuw"/>
     <input type="button" onclick="window.location = '/admin/clients/remove'" value="Verwijderen"/>
     <input type="button" onclick="window.location = '/admin/clients/pwreset'" value="Wachtwoord resetten"/>
@@ -34,7 +33,7 @@ if(isset($_POST['search']) && !empty($_POST['search'])) {
     <br/><br/>
     <table>
 	<tr>
-	    <th align="center"><input type="checkbox" id="checkall" value=""/></th>
+	    <th class="center"><input type="checkbox" id="checkall" value=""/></th>
 	    <th>Gebruikersnaam</th>
 	    <th>Volledige naam</th>
 	    <th>E-mail adres</th>
@@ -46,7 +45,7 @@ if(isset($_POST['search']) && !empty($_POST['search'])) {
     foreach($res as $row) {
     ?>
 	<tr>
-	    <td align="center"><input type="checkbox" name="id[]" value="<?php echo($row['ID'])?>"/></td>
+	    <td class="center"><input type="checkbox" name="id[]" value="<?php echo($row['ID'])?>"/></td>
 	    <td><?php echo("<a href=/admin/clients/edit/".$row['ID'].">".$row['username'])."</a>" ?></td>
 	    <td><?php echo($row['name']); ?></td>
 	    <td><?php echo($row['email']); ?></td>

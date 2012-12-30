@@ -85,6 +85,10 @@ table.simple-table tr:nth-child(even) {
     background: transparent;
 }
 
+.hidden {
+	display: none;
+}
+
 #login-form {
     width: 150px;
     height: 130px;
@@ -277,12 +281,18 @@ table.simple-table tr:nth-child(even) {
 .agenda .ag-day-row {
     clear:both;
     padding: 2px 9px;
+	cursor: pointer;
 }
 
-.agenda .ag-day-appointment {
+.agenda .ag-day-appointment,
+.agenda .ag-bubble-all-appointments-row {
     background-color: #CAD6EC;
     border: 1px solid #768093;
     margin: 0 2px 2px;
+}
+
+.agenda .ag-bubble-all-date {
+	font-weight: bold;
 }
 
 .agenda .ag-non-month .ag-day-appointment {
@@ -324,13 +334,18 @@ table.simple-table tr:nth-child(even) {
 }
 
 #bubble-main,
-#bubble-edit-appointment {
+#bubble-edit-appointment,
+#bubble-all-appointments {
     display: none;
     width: 350px;
     height: 150px;
     position: absolute;
     background-color: #fff;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+#bubble-edit-appointment {
+	z-index: 1000;
 }
 
 .bubble-content {
@@ -351,12 +366,25 @@ table.simple-table tr:nth-child(even) {
     background-color: #fff;
 }
 
+.bubble-close {
+	cursor: pointer;
+    font-weight: bold;
+    position: absolute;
+    right: 10px;
+    top: 10px;
+}
+
 .right {
     float: right;
 }
 
 .left {
     float: left;
+}
+
+.ag-day-appointment-more {
+	color: #1556d1;
+	cursor: pointer;
 }
 
 .bottom-prong {
@@ -403,6 +431,21 @@ table.simple-table tr:nth-child(even) {
     border-style: solid;
     border-width: 8px;
     left: 1px;
+}
+
+#bubble-all-appointments {
+    display: none;
+    width: 350px;
+    height: auto;
+    position: absolute;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+#bubble-all-appointments .bubble-content {
+    padding: 20px;
+    height: auto;
+    width: 310px;
 }
 
 .pagination {

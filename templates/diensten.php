@@ -12,7 +12,7 @@ $dbh = connectToDatabase();
 if (isset($_GET['id'])) {
     //query for selecting the service ID servicename, servicetext and article ID
     //sql query
-    $sth1 = $dbh->prepare("SELECT service_id, servicename, servicetext, article_id FROM services WHERE service_id=:id");
+    $sth1 = $dbh->prepare("SELECT service_id, servicename, servicetext, pph, avgcost, article_id FROM services WHERE service_id=:id");
     //binding variable
     $sth1->bindParam(":id", $_GET['id']);
     //executing the query
@@ -26,6 +26,8 @@ if (isset($_GET['id'])) {
 	$service_id = $row['service_id'];
 	$servicename = $row['servicename'];
 	$article_id = $row['article_id'];
+	$pph = $row['pph'];
+	$avgcost = $row['avgcost'];
 
 	//query for selecting the affiliated article
 	//sql query
@@ -61,16 +63,19 @@ if (isset($_GET['id'])) {
 		<?php
 		echo $row['text'];
 		?>
+		<br>
 	    </div>
 
-	<?php } ?>
-	    
+	<?php } 
+	    echo'<hr><br/>Prijs per uur voor deze dienst: € '.$pph.'	Gemiddelde prijs van deze dienst: € '.$avgcost.'<hr><br/>';?>
 	<!--Display the link for asking for the service-->
 	<div id="dalink">
 	    <?php
+	    
 	    echo '<a href="/dienstaanvraag/' . $service_id . '">Vraag de dienst ' . $servicename . ' aan</a>';
 	    ?> 
 	</div>
+	<br/>
 	<?php
 	}
 	?>

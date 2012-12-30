@@ -10,15 +10,16 @@ $fouttext = '';
 $option2 = '';
 
 function checkDateTime($date) {
-	if (date ( 'Y-m-d H:i:s', strtotime ( $date ) ) == $date) {
+	if(date ( 'd-m-Y H:i:s', strtotime ( $date ) ) == $date){
 		return true;
-	} else {
+	}
+	else{
 		return false;
 	}
 }
 
 // Check if form is submitted
-if (isset ( $_POST ['submit'] )) {
+if(isset ( $_POST ['submit'] )){
 	// Get data from form and set data into variable.
 	$option = $_POST ['option'];
 	$id = $_POST ['id'];
@@ -28,9 +29,10 @@ if (isset ( $_POST ['submit'] )) {
 	$date_edited = $_POST ['date_edited'];
 	$text = $_POST ['text'];
 	$published = $_POST ['published'];
+	echo date ( 'Y-m-d H:i:s', strtotime ( $date_added ) );
 	
 	// Check if all formfields are filled.
-	if ($title == '' or $category == '' or $date_added == '' or $date_edited == '' or $text == '' or $published == '') {
+	if($title == '' or $category == '' or $date_added == '' or $date_edited == '' or $text == '' or $published == ''){
 		$fouttext = 'Niet alle gegevens zijn ingevuld!';
 		// set original option into variable originaloption;
 		$originaloption = $option;
@@ -38,7 +40,8 @@ if (isset ( $_POST ['submit'] )) {
 		// correctly
 		$option = 'renew';
 		$option2 = 'renew';
-	} elseif (checkDateTime ( $date_added ) == false or checkDateTime ( $date_edited ) == false) {
+	}
+	elseif(checkDateTime ($date_added) == false or checkDateTime ($date_edited) == false){
 		$fouttext = 'Datumnotatie is niet correct';
 		// set original option into variable originaloption;
 		$originaloption = $option;
@@ -49,13 +52,13 @@ if (isset ( $_POST ['submit'] )) {
 	}
 	
 	// if option=renew article cannot be saved into database
-	if ($option != 'renew') {
+	if($option != 'renew'){
 		
 		// Format date to databaseformat
 		$date_added = date ( 'Y-m-d H:i:s', strtotime ( $date_added ) );
 		$date_edited = date ( 'Y-m-d H:i:s', strtotime ( $date_edited ) );
 		
-		if ($option == 'new') {
+		if($option == 'new'){
 			// Insert new article
 			$db = connectToDatabase ();
 			$sth = $db->prepare ( "INSERT INTO article (cat_id, date_added, date_edited, title, text, published) 
@@ -68,7 +71,8 @@ if (isset ( $_POST ['submit'] )) {
 			$sth->bindParam ( ":text", $text );
 			$sth->bindParam ( ":published", $published );
 			$result = $sth->execute ();
-		} elseif ($option == 'edit') {
+		}
+		elseif($option == 'edit'){
 			// Edit an article
 			$db = connectToDatabase ();
 			$sth = $db->prepare ( "UPDATE article SET cat_id=:category,date_added=:date_added,date_edited=:date_edited,
@@ -85,9 +89,10 @@ if (isset ( $_POST ['submit'] )) {
 		}
 		
 		// If article is saved succesfully, user get a message
-		if ($result == 1) {
+		if($result == 1){
 			$case = "succes";
-		} else {
+		}
+		else{
 			$case = "fail";
 		}
 		
@@ -98,13 +103,14 @@ if (isset ( $_POST ['submit'] )) {
 }
 
 // Get option
-if (isset ( $option )) {
+if(isset ( $option )){
 	$option = $option;
-} else {
-	$option = isset ( $_GET ["option"] ) ? $_GET ['option'] : 'new';
+}
+else{
+	$option = isset ( $_GET ["option"] )? $_GET ['option'] : 'new';
 }
 // Check which option is to be used.
-if ($option == 'new') {
+if($option == 'new'){
 	$id = '';
 	$date_added = date ( 'd-m-Y H:i:s' );
 	$date_edited = date ( 'd-m-Y H:i:s' );
@@ -113,9 +119,10 @@ if ($option == 'new') {
 	$text = '';
 	$published = " selected";
 	$unpublished = '';
-} elseif ($option == 'edit') {
+}
+elseif($option == 'edit'){
 	// Get the ID from the URL
-	$id = isset ( $_GET ["id"] ) ? $_GET ['id'] : '';
+	$id = isset ( $_GET ["id"] )? $_GET ['id'] : '';
 	
 	// Get content from database where ID=$id
 	$sth = $db->prepare ( "SELECT * FROM article WHERE ID=$id" );
@@ -123,7 +130,7 @@ if ($option == 'new') {
 	$content = $sth->fetchAll ( PDO::FETCH_ASSOC );
 	
 	// Set the data into variables
-	foreach ( $content as $row ) {
+	foreach($content as $row){
 		$title = $row ["title"];
 		$category = $row ["cat_id"];
 		$date_added = $row ["date_added"];
@@ -133,19 +140,22 @@ if ($option == 'new') {
 		$published = $row ["published"];
 	}
 	// Check if article is published
-	if ($published == 1) {
+	if($published == 1){
 		$published = " selected";
 		$unpublished = '';
-	} else {
+	}
+	else{
 		$published = '';
 		$unpublished = " selected";
 	}
-} elseif ($option == 'renew') {
+}
+elseif($option == 'renew'){
 	// Check if article is published
-	if ($published == 1) {
+	if($published == 1){
 		$published = " selected";
 		$unpublished = '';
-	} else {
+	}
+	else{
 		$published = '';
 		$unpublished = " selected";
 	}
@@ -157,15 +167,15 @@ $sth = $db->prepare ( "SELECT * FROM category" );
 $sth->execute ();
 $categorys = $sth->fetchAll ( PDO::FETCH_ASSOC );
 
-if ($option2 == 'renew') {
+if($option2 == 'renew'){
 	?>
 <div class="message_error">
 	<p><?php echo $fouttext; ?></p>
 </div>
 <?php }?>
 <form action="" method="post">
-	<input name="option" type="hidden" value="<?php echo $option; ?>" /> 
-	<input name="id" type="hidden" value="<?php echo $id; ?>" />
+	<input name="option" type="hidden" value="<?php echo $option; ?>" /> <input
+		name="id" type="hidden" value="<?php echo $id; ?>" />
 	<table class="simple-table">
 		<tr>
 			<td colspan="2">Titel:</td>
@@ -179,13 +189,14 @@ if ($option2 == 'renew') {
 			<td><select name="category">
     		<?php
 						// Print the categorys
-						foreach ( $categorys as $row ) {
+						foreach($categorys as $row){
 							$id = $row ["cat_id"];
 							$name = $row ["name"];
 							// Check which category is to be selected
-							if ($id == $category) {
+							if($id == $category){
 								$selected = " selected";
-							} else {
+							}
+							else{
 								$selected = '';
 							}
 							print ("<option value=$id" . $selected . ">") ;

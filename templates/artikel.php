@@ -47,6 +47,7 @@ if (isset ( $res )) {
     <i><br />Laatst gewijzigd: <?php echo $datee ?></i>
     <?php } ?>
 </div>
+<br><hr><br>
 <div class="artikel" id="text">
     <?php echo $row['text']?>
 </div>

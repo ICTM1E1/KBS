@@ -42,8 +42,8 @@ if(isset ( $_POST ['option'] )){
 		
 		if($_POST ['option'] == "Publiceer"){
 			$sth = $dbh->prepare ( "UPDATE services SET published=1 WHERE service_id IN($id)" );
-			$sth->execute ();
-			if($sth == true){
+			$result = $sth->execute ();
+			if($result == true){
 				$style = 'message_success';
 				$statusText = "Dienst succesvol gepubliceerd.";
 			}
@@ -54,8 +54,8 @@ if(isset ( $_POST ['option'] )){
 		}
 		if($_POST ['option'] == "Depubliceer"){
 			$sth = $dbh->prepare ( "UPDATE services SET published=0 WHERE service_id IN($id)" );
-			$sth->execute ();
-			if($sth == true){
+			$result = $sth->execute ();
+			if($result == true){
 				$style = 'message_success';
 				$statusText = "Dienst succesvol gedepubliceerd.";
 			}
@@ -66,8 +66,8 @@ if(isset ( $_POST ['option'] )){
 		}
 		if($_POST ['option'] == "Verwijderen"){
 			$sth = $dbh->prepare ( "DELETE FROM services WHERE service_id IN($id)" );
-			$sth->execute ();
-			if($sth == true){
+			$result = $sth->execute ();
+			if($result == true){
 				$style = 'message_success';
 				$statusText = "Dienst succesvol verwijderd.";
 			}

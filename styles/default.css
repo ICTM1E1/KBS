@@ -333,6 +333,7 @@ table input[type="text"] {
     margin-left: 5px;
     list-style: none;
     padding: 5px;
+    border: #7a8bac thin solid;
 }
 
 #home-upper{
@@ -359,9 +360,12 @@ table input[type="text"] {
 }
 
 #home-article{
-    margin: 5px;
+    margin: 10px;
+    margin-bottom: 20px;
     border: #7a8bac inset medium;
-    padding: 10px;
+    border-radius:10px;
+    -moz-border-radius:10px; /* Old Firefox */
+    padding: 15px;
 }
 
 .pagination {

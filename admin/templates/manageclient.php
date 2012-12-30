@@ -5,11 +5,17 @@ if(isset($_GET['option'])) {
     
     if($_GET['option'] == "remove") { 
 	$IDs = $_POST['id[]'];
+	$IDs = implode(",", $IDs);
+	$IDs = mysql_real_escape_string($IDs);
 	
+	$sth = $dbh->query("DELETE FROM clients WHERE ID IN (".$IDs.")");
+	$result = $sth->execute();
+	    
+	if(!$result) {
+	    // todo after merge
+	}
     } elseif($_GET['option'] == "pwreset") {
 	$IDs = $_POST['id[]'];
-	
-	$IDs = explode(",", $IDs); // Maak een array van alle IDs
 	
 	foreach($IDs as $row) {
 	    $pw = "";
@@ -28,12 +34,9 @@ if(isset($_GET['option'])) {
 	    //$sth->execute();
 	}
     }
-} elseif($_GET['option'] == "edit") { 
+}
+
+if($_GET['option'] == "edit") { 
     $id = $_GET['id'];
-} else {
-?>
-
-
-<?php
 }
 ?>
