@@ -36,6 +36,7 @@ $result = getAgendaMonth();
 	<div class="bubble-content">
 		<form action="/admin/agenda/bewerk" method="post">
 			<h3>Afspraak</h3>
+			<div class="bubble-close" style="float:right;">X</div>
 			<table>
 				<tr>
 					<td>Wanneer:</td>
@@ -63,6 +64,7 @@ $result = getAgendaMonth();
 <div id="bubble-edit-appointment">
 	<div class="bubble-content">
 		<h3 id="appointment-name"></h3>
+		<div class="bubble-close" style="float:right;">X</div>
 		<div id="appointment-date"></div>
 		<div class="appointment-options">
 			<input class="left" type="button" id="delete-appointment" value="Verwijder definitief" />
@@ -73,6 +75,12 @@ $result = getAgendaMonth();
 	<div class="bottom-prong">
 		<div class="prong-dk"></div>
 		<div class="prong-lt"></div>
+	</div>
+</div>
+<div id="bubble-all-appointments">
+		<div class="bubble-close" style="float:right;">X</div>
+	<div class="bubble-content">
+		
 	</div>
 </div>
 <script>

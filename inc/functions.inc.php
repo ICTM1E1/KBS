@@ -273,8 +273,9 @@ function getAgendaMonth($month = false, $year = false)
 	$is_next_month = false;
 	foreach ($cal as $week)
 	{
-		$top = $counter * 16.6;
-		$data .= '<div class="ag-month-row" style="height:16.6%;top:' . $top . '%">';
+		$height = 16.6;
+		$top = $counter * $height;
+		$data .= '<div class="ag-month-row" style="height:' . $height . '%;top:' . $top . '%">';
 		$data .= '<table class="ag-grid">';
 		$data .= '<tbody>';
 		$data .= '<tr>';
@@ -287,7 +288,7 @@ function getAgendaMonth($month = false, $year = false)
 			$month_name = ucFirst(strftime('%B', mktime(0, 0, 0, $day['month'], $day['day'], $day['year'])));
 			$today = '';
 			
-			if ($day['day'] == $day_today && $month == $month_today)
+			if ($day['day'] == $day_today && $is_current_month)
 			{
 				$today = ' day-today';
 			}
@@ -302,14 +303,34 @@ function getAgendaMonth($month = false, $year = false)
 			
 			if(isset($day['appointments']))
 			{
+				$appointments_count = count($day['appointments']);
+				$appointments_counter = 1;
+				$limit = 4;
+				if($appointments_count > 4)
+				{
+					$limit = 3;
+				}
+				
+				$data .= '<div class="ag-appointments">';
 				foreach($day['appointments'] as $key => $value)
 				{
-					$data .= '<div class="ag-day-row ag-day-appointment">';
+					$hidden = $appointments_counter > $limit ? ' hidden':''; 
+					$data .= '<div class="ag-day-row ag-day-appointment' . $hidden . '">';
 					$data .= '<span>' . $value['naam'] . '</span>';
 					$data .= '<input type="hidden" value="' . $value['naam'] . '" class="ag-appointment-name"/>';
 					$data .= '<input type="hidden" value="' . $value['id'] . '" class="ag-appointment-id"/>';
 					$data .= '</div>';
+					
+					$appointments_counter++;
 				}
+				if($appointments_count > 4)
+				{
+					$data .= '<div class="ag-day-row ag-day-appointment-more">';
+					$data .= '<span>+' . ($appointments_count - 3) . ' extra</span>';
+					$data .= '</div>';
+				}
+				
+				$data .= '</div>';
 			}
 			
 			$data .= '<input type="hidden" value="' . $day['day'] . '" class="ag-date-day"/>';
