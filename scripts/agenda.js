@@ -375,13 +375,12 @@ $(document).ready(function()
 				$('#end-date').datepicker('setDate', dateText);
 			}
 		}
-	})
-	
+	});	
 	
 	$('#start-time').click(function(){
 		var position = $(this).position();
-		var top = position.top + 17;
-		var left = position.left;
+		var top = position.top + 26;
+		var left = position.left - 1;
 		
 		$('#start-time-list').css({
 			'top' : top,
@@ -395,6 +394,32 @@ $(document).ready(function()
 		if ($("#start-time-list div").has(":focus").length == 0) 
 		{
 			$('#start-time-list').css('display', 'none');
+		}
+		
+	});
+	
+	$('#end-time-list div').mousedown(function(e)
+	{
+		$('#end-time').val($(this).html());
+	});
+	
+	$('#end-time').click(function(){
+		var position = $(this).position();
+		var top = position.top + 26;
+		var left = position.left - 1;
+		
+		$('#end-time-list').css({
+			'top' : top,
+			'left' : left,
+			'display' : 'block'
+		});
+	});
+	
+	$('#end-time').blur(function()
+	{
+		if ($("#end-time-list div").has(":focus").length == 0) 
+		{
+			$('#end-time-list').css('display', 'none');
 		}
 		
 	});

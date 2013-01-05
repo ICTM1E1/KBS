@@ -7,6 +7,7 @@
 html {
     font-family: Arial, Helvetica;
     color: #343434;
+	font-size: 14px;
 }
 
 img {
@@ -175,7 +176,6 @@ table input[type="text"] {
 
 #right-content {
     width: 220px;
-    height: 100px;
     float: right;
     border: 1px solid #ccc;
     min-height: 200px;
@@ -394,4 +394,55 @@ table input[type="text"] {
 }
 #dalink>a {
     color: #F5F5F5;
+}
+
+.right-content-archive ul {
+	display: none;
+	list-style: none;
+}
+
+.right-content-archive ul li {
+	padding-left: 25px;
+}
+
+#footer .copyright {
+	color: #FFFFFF;
+    margin-left: 10px;
+    margin-top: 15px;
+    position: relative;
+	float: left;
+}
+
+#footer .social-media {
+	float: right;
+    height: 32px;
+    margin-right: 10px;
+    margin-top: 10px;
+    position: relative;
+    vertical-align: middle;
+    width: 110px;
+}
+
+#footer .social-media a img{
+	width: 32px;
+	height: 32px;
+}
+
+/*
+ * IE 
+ */
+.ie9 #search-form input[type="text"],
+.ie8 #search-form input[type="text"] {
+	width: 170px;
+}
+
+.ie9 input[type="submit"],
+.ie9 input[type="button"],
+.ie8 input[type="submit"],
+.ie8 input[type="button"] {
+	font-size: 14px;
+}
+
+.ie8 #wrapper {
+	border: 1px solid #ccc;
 }

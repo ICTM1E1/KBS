@@ -21,8 +21,11 @@ if (! file_exists ( DOCROOT . 'templates/' . $page . '.php' )) {
 }
 
 ?>
-<html>
+<!--[if IE 8]><html class="ie8"><![endif]-->
+<!--[if IE 9]><html class="ie9"><![endif]-->
+<!--[if !IE]><html><![endif]-->
 <head>
+<meta http-equiv="X-UA-Compatible" content="IE=9" >
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Juridische hulp</title>
 <link rel="stylesheet" type="text/css" href="/styles/default.css" />
@@ -89,13 +92,19 @@ if (! file_exists ( DOCROOT . 'templates/' . $page . '.php' )) {
 					<input type="text" name="zoekwoord123" placeholder="Zoeken" /> <input
 						type="image" src="/images/searcher.png" value="" />
 				</form>
-		    
-		    <?php
-						sortArticles ( connectToDatabase () );
-						?>
+			<div class="right-content-archive">
+		    	<?php echo sortArticles(connectToDatabase());?>
+		    </div>
 		</div>
 		</div>
-		<div id="footer"></div>
+		<div id="footer">
+			<div class="copyright">Copyright &copy; 2013</div>
+			<div class="social-media">
+				<a target="_blank" href="http://facebook.com"><img src="/images/facebook.png" /></a>
+				<a target="_blank" href="http://twitter.com"><img src="/images/twitter.png" /></a>
+				<a target="_blank" href="http://linkedin.com"><img src="/images/linkedin.png" /></a>
+			</div>
+		</div>
 	</div>
 </body>
 </html>

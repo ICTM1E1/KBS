@@ -59,7 +59,9 @@ if (isset($_POST["verstuur"])){
                 </tr>
                 <tr>
                 	<td>&nbsp;</td>
-                    <td align="right" ><input type="submit" name="verstuur" value="Versturen"></td>
+                    <td align="right" >
+                    	<input type="submit" name="verstuur" value="Versturen" class="submit"/>
+                    </td>
                 </tr>
             </table>
         </form>

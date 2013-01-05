@@ -42,22 +42,22 @@ function sortArticles($dbh)
 		
 		$years[$year][$month][$row['ID']] = $row['title'];
 	}
-	
+	$content = '';
 	foreach ($years as $key => $val)
 	{
-		echo ("<a rel=\"" . $year . "\" id=\"fold-year\" class=\"no-underline zipper\" href=\"#\"> >" . $year . " </a>");
-		echo ("<ul id=" . $year . "><li>");
+		$content .= "<a rel=\"" . $year . "\" id=\"fold-year\" class=\"no-underline zipper\" href=\"#\"><span class='symbol'>&#x25B6;</span>" . $year . " </a>";
+		$content .= "<ul id=" . $year . ">";
 		
 		foreach ($val as $month => $articles)
 		{
-			echo ("<a rel=\"" . $year . "-" . $smonth . "\" id=\"fold-month\" href=\"#\" class=\"no-underline zipper\"> ></a> ");
 			foreach ($articles as $art => $title)
 			{
-				echo ("<a href=\"/artikel/" . $art . "\">" . $title . "</a>");
+				$content .= "<li><a href=\"/artikel/" . $art . "\">" . $title . "</a></li>";
 			}
 		}
 	}
 	
+	return $content;
 	// echo("<a rel=\"".$year."-".$smonth."\" id=\"fold-month\" href=\"#\"
 	// class=\"no-underline zipper\"> ></a> ");
 	// echo("<a href=\"/artikel/".$row2['ID']."\"");

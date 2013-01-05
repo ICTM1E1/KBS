@@ -301,7 +301,7 @@ table.simple-table tr:nth-child(even) {
 }
 
 .bewerkagendapunt table {
-    width: 600px;
+    width: 400px;
 }
 
 .bewerkagendapunt table #start-time,
@@ -314,7 +314,8 @@ table.simple-table tr:nth-child(even) {
     width: 80px;
 }
 
-.bewerkagendapunt #start-time-list {
+.bewerkagendapunt #start-time-list,
+.bewerkagendapunt #end-time-list {
     border: 1px solid #95a1b8;
     height: 112px;
     overflow: auto;
@@ -325,12 +326,37 @@ table.simple-table tr:nth-child(even) {
     position: absolute;
 }
 
-.bewerkagendapunt #start-time-list div {
+.bewerkagendapunt #start-time-list div,
+.bewerkagendapunt #end-time-list div {
     cursor: pointer;
 }
 
-.bewerkagendapunt #start-time-list div:hover {
+.bewerkagendapunt #start-time-list div:hover,
+.bewerkagendapunt #end-time-list div:hover {
     background-color: #CAD6EC;
+}
+
+.bewerkagendapunt input,
+.bewerkagendapunt textarea,
+.bewerkagendapunt select,
+.bewerkagendapunt option {
+	padding: 5px;
+}
+
+.bewerkagendapunt input.title {
+	font-size: 16px;
+	font-weight: bold;
+	width: 100%;
+}
+
+.bewerkagendapunt textarea,
+.bewerkagendapunt input.location,
+.bewerkagendapunt select {
+	width: 100%;
+}
+
+.bewerkagendapunt select {
+	height: 28px;
 }
 
 #bubble-main,
