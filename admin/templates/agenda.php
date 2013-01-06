@@ -10,7 +10,6 @@
 $result = getAgendaMonth();
 ?>
 
-
 <a href="#" id="previous_month">&lt; vorige maand</a><br />
 <a href="#" id="next_month">Volgende maand &gt;</a>
 <h3 id="current_date"><?php echo $result['month_name'];?> <?php echo $result['year'];?></h3>

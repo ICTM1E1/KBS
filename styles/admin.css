@@ -291,6 +291,13 @@ table.simple-table tr:nth-child(even) {
     margin: 0 2px 2px;
 }
 
+.agenda .ag-day-requested-appointment,
+.agenda .ag-bubble-all-appointments-requested {
+	background-color: #cbecca;
+    border: 1px solid #768093;
+    margin: 0 2px 2px;
+}
+
 .agenda .ag-bubble-all-date {
 	font-weight: bold;
 }

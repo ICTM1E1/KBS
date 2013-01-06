@@ -276,9 +276,17 @@ $(document).ready(function()
 			
 			var appointments_html = '<div class="ag-bubble-all-date">' + date + '</div>';
 			appointments.each(function(){
-				appointments_html += '<div class="ag-bubble-all-appointments-row ag-day-row">';
-				appointments_html += $(this).html();
-				appointments_html += '</div>';
+				if($(this).hasClass(('ag-day-requested-appointment')))
+				{
+					appointments_html += '<div class="ag-bubble-all-appointments-row ag-day-row ag-bubble-all-appointments-requested">';
+					appointments_html += $(this).html();
+					appointments_html += '</div>';
+				}
+				else {
+					appointments_html += '<div class="ag-bubble-all-appointments-row ag-day-row">';
+					appointments_html += $(this).html();
+					appointments_html += '</div>';
+				}
 			});
 			
 			$('#bubble-all-appointments .bubble-content').html(appointments_html);

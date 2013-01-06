@@ -29,4 +29,8 @@ $(document).ready(function(){
 		$(this).removeClass('current').children('ul').hide();
 	});
 
+	$('.datepicker').datepicker({ 
+		dateFormat: "dd-mm-yy",
+		minDate: new Date($('.date_today').val())
+	});
 });

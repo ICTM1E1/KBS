@@ -179,6 +179,9 @@ function getAgendaMonth($month = false, $year = false)
 	
 	$db = connectToDatabase();
 	
+	/*
+	 * Haal de agendapunten op gemaakt door de beheerder
+	 */
 	$sql = "
 		SELECT *
 		FROM agenda
@@ -193,6 +196,24 @@ function getAgendaMonth($month = false, $year = false)
 	$sth = $db->prepare($sql);
 	$sth->execute($parameters);
 	$appointments = $sth->fetchAll(PDO::FETCH_ASSOC);
+	
+	/*
+	 * Haal de aangevraagde diensten op
+	 */
+	$sql = "
+		SELECT *
+		FROM `dienst_aanvragen`
+		WHERE `datum` BETWEEN :start_date AND :end_date
+		ORDER BY `datum`
+	";
+	
+	$parameters = array(
+		':start_date' => $start_date,
+		':end_date' => $end_date,		
+	);
+	$sth = $db->prepare($sql);
+	$sth->execute($parameters);
+	$requested_appointments = $sth->fetchAll(PDO::FETCH_ASSOC);
 	
 	/*
 	 * Opbouw maand
@@ -257,10 +278,17 @@ function getAgendaMonth($month = false, $year = false)
 			{
 				if($row['start_datum'] == $date)
 				{
-					
 					$cal[$week][$day]['appointments'][] = $row;
 					unset($appointments[$key]);
-					
+				}
+			}
+			
+			foreach($requested_appointments as $key => $row)
+			{
+				if($row['datum'] == $date)
+				{
+					$cal[$week][$day]['requested_appointments'][] = $row;
+					unset($requested_appointments[$key]);
 				}
 			}
 		}
@@ -301,37 +329,69 @@ function getAgendaMonth($month = false, $year = false)
 			$data .= '<td class="ag-day' . $today  . $non_month . '">';
 			$data .= '<div class="ag-day-row"><span>' . $day['day'] . '</span></div>';
 			
-			if(isset($day['appointments']))
+			/*
+			 * appointments
+			 */
+			if(isset($day['appointments']) || isset($day['requested_appointments']))
 			{
-				$appointments_count = count($day['appointments']);
+				$appointments_count = 0;
+				if(isset($day['appointments']))
+				{
+					$appointments_count += count($day['appointments']);
+				}
+				if(isset($day['requested_appointments']))
+				{
+					$appointments_count += count($day['requested_appointments']);
+				}
 				$appointments_counter = 1;
 				$limit = 4;
 				if($appointments_count > 4)
 				{
 					$limit = 3;
 				}
-				
 				$data .= '<div class="ag-appointments">';
-				foreach($day['appointments'] as $key => $value)
+				if(isset($day['appointments']))
 				{
-					$hidden = $appointments_counter > $limit ? ' hidden':''; 
-					$data .= '<div class="ag-day-row ag-day-appointment' . $hidden . '">';
-					$data .= '<span>' . $value['naam'] . '</span>';
-					$data .= '<input type="hidden" value="' . $value['naam'] . '" class="ag-appointment-name"/>';
-					$data .= '<input type="hidden" value="' . $value['id'] . '" class="ag-appointment-id"/>';
-					$data .= '</div>';
-					
-					$appointments_counter++;
+					foreach($day['appointments'] as $key => $value)
+					{
+						$hidden = $appointments_counter > $limit ? ' hidden':''; 
+						$data .= '<div class="ag-day-row ag-day-appointment' . $hidden . '">';
+						$data .= '<span>' . $value['naam'] . '</span>';
+						$data .= '<input type="hidden" value="' . $value['naam'] . '" class="ag-appointment-name"/>';
+						$data .= '<input type="hidden" value="' . $value['id'] . '" class="ag-appointment-id"/>';
+						$data .= '</div>';
+						
+						$appointments_counter++;
+					}
 				}
+				
+				if(isset($day['requested_appointments']))
+				{
+					foreach($day['requested_appointments'] as $key => $value)
+					{
+						$hidden = $appointments_counter > $limit ? ' hidden':''; 
+						$data .= '<div class="ag-day-row ag-day-appointment ag-day-requested-appointment' . $hidden . '">';
+						$data .= '<span>' . $value['naam'] . '</span>';
+						$data .= '<input type="hidden" value="' . $value['naam'] . '" class="ag-appointment-name"/>';
+						$data .= '<input type="hidden" value="' . $value['id'] . '" class="ag-appointment-id"/>';
+						$data .= '</div>';
+						
+						$appointments_counter++;
+					}				
+				}
+				
 				if($appointments_count > 4)
 				{
 					$data .= '<div class="ag-day-row ag-day-appointment-more">';
 					$data .= '<span>+' . ($appointments_count - 3) . ' extra</span>';
 					$data .= '</div>';
 				}
-				
 				$data .= '</div>';
 			}
+			/*
+			 * End appointments
+			 * Start rest data
+			 */
 			
 			$data .= '<input type="hidden" value="' . $day['day'] . '" class="ag-date-day"/>';
 			$data .= '<input type="hidden" value="' . $day['month'] . '" class="ag-date-month"/>';
@@ -462,5 +522,71 @@ function retreivenewsarticle($dbh)
 	$result = $sth->fetchAll(PDO::FETCH_ASSOC);
 	// make the function retreive the articles asked for
 	return $result;
+}
+
+function validEmail($email, $skipDNS = false)
+{
+	$isValid = true;
+	$atIndex = strrpos($email, "@");
+	if (is_bool($atIndex) && !$atIndex)
+	{
+		$isValid = false;
+	}
+	else
+	{
+		$domain = substr($email, $atIndex+1);
+		$local = substr($email, 0, $atIndex);
+		$localLen = strlen($local);
+		$domainLen = strlen($domain);
+		if ($localLen < 1 || $localLen > 64)
+		{
+		 // local part length exceeded
+		 $isValid = false;
+		}
+		else if ($domainLen < 1 || $domainLen > 255)
+		{
+		 // domain part length exceeded
+		 $isValid = false;
+		}
+		else if ($local[0] == '.' || $local[$localLen-1] == '.')
+		{
+		 // local part starts or ends with '.'
+		 $isValid = false;
+		}
+		else if (preg_match('/\\.\\./', $local))
+		{
+		 // local part has two consecutive dots
+		 $isValid = false;
+		}
+		else if (!preg_match('/^[A-Za-z0-9\\-\\.]+$/', $domain))
+		{
+		 // character not valid in domain part
+		 $isValid = false;
+		}
+		else if (preg_match('/\\.\\./', $domain))
+		{
+		 // domain part has two consecutive dots
+		 $isValid = false;
+		}
+		else if (!preg_match('/^(\\\\.|[A-Za-z0-9!#%&`_=\\/$\'*+?^{}|~.-])+$/', str_replace("\\\\","",$local)))
+		{
+		 // character not valid in local part unless
+		 // local part is quoted
+		 if (!preg_match('/^"(\\\\"|[^"])+"$/', str_replace("\\\\","",$local)))
+		 {
+		 	$isValid = false;
+		 }
+		}
+
+		if(!$skipDNS)
+		{
+			if ($isValid && !(checkdnsrr($domain,"MX") || checkdnsrr($domain,"A")))
+			{
+			 // domain not found in DNS
+			 $isValid = false;
+			}
+		}
+	}
+	return $isValid;
 }
 ?>
