@@ -14,6 +14,10 @@ if (isset($_POST['Verander!'])) {
 	$ident = $_POST['id'];
 	$priceph = $_POST['pph'];
 	$average = $_POST['avgcost'];
+	if(is_numeric($priceph)==false or is_numeric($average)==false){
+	    echo '<div class="message_error"><p>U moet cijfers voor de prijzen gebruiken</p></div>';
+	}
+	elseif(($average>=0) and ($priceph>=0)){
 	//updating the database
 	//sql statement
 	$sql = (" UPDATE services SET pph=$priceph, avgcost=$average WHERE service_id=$ident ");
@@ -22,7 +26,9 @@ if (isset($_POST['Verander!'])) {
 	$sth->execute();
 	header('Location:/admin/admintarieven');
     }
-} else {
+    else{echo '<div class="message_error"><p>U moet uw prijzen op 0 of hoger hebben</p></div>';}
+    }
+}
 
     //retrieving rates from service
     //retrieving ID
@@ -50,4 +56,3 @@ if (isset($_POST['Verander!'])) {
         <input type="submit" value="Verander!" name="Verander!" />
 
     </form>
-<?php } ?>
