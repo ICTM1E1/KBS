@@ -183,7 +183,7 @@ if (isset($_POST['vraagaan']))
 		</tr>
 		<tr>
 			<td>Mobiel</td>
-			<td><input type="text" name="mobile" value="<?php echo isset($mobile)?$mobile:''?>" />&nbsp;<small>(06-1234567890)</small></td>
+			<td><input type="text" name="mobile" value="<?php echo isset($mobile)?$mobile:''?>" />&nbsp;<small>(06-12345678)</small></td>
 		</tr>
 		<tr>
 			<td>Datum</td>
