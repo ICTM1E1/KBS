@@ -35,19 +35,19 @@ if (isset($_POST['Verander!'])) {
     //retrieving resulted data
     $row = $sth->fetch(PDO::FETCH_ASSOC);
     ?>
-<!--Form for input of price per hour and average price-->
+    <!--Form for input of price per hour and average price-->
     <form action="" method="POST">
         <input type="hidden" name="id" value="<?php echo($id); ?>">
-        <table class="simple-table">
-    	<tr>
-    	    <td>Prijs per uur:<input type="text" name="pph" value="<?php echo($row['pph']) ?>" /></td>
-    	</tr>
-    	<tr>
-    	    <td>Gemiddelde prijs:<input type="text" name="avgcost" value="<?php echo($row['avgcost']) ?>" /></td>
-    	</tr>                    
-    	<tr>                        
-    	    <td><input type="submit" value="Verander!" name="Verander!" /></td>
-    	</tr>
-        </table>
+
+        <label>Prijs per uur:</label>
+        <br>
+        <input type="text" name="pph" value="<?php echo($row['pph']) ?>" />
+        <br/><br/>
+        <label>Gemiddelde prijs:</label>
+        <br>    
+        <input type="text" name="avgcost" value="<?php echo($row['avgcost']) ?>" />
+        <br/><br/>
+        <input type="submit" value="Verander!" name="Verander!" />
+
     </form>
 <?php } ?>
