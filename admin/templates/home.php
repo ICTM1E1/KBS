@@ -47,25 +47,3 @@ $requested_appointments = get_requestedAppointments();
 		<div>Er zijn momenteel geen afspraken.</div>
 	<?php endif;?>
 </div>
-    <!-- <form action="" method="POST" style="width: 200px;  ">
-	<table>
-	    <tr>
-		<td>
-		   <h2>Homepagina tekst introductie aanpassen</h2>
-		</td>
-	    </tr>
-	    <tr>
-		<td>
-		    <input type="text" name="introtitle" value="Introductie" />
-		</td>
-	    </tr>
-	    <tr>
-		<td>
-		    <textarea name="homeintrotext" rows="20" cols="70"></textarea>
-		</td>
-	    </tr>
-	    <tr>
-		<td><input type="submit" value="submit" name="submitintro" /></td>
-	    </tr>
-	</table>
-    </form> -->
