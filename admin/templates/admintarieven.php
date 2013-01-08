@@ -16,7 +16,7 @@ if (isset($_GET["page"])) {
 //display 20 items per page
 $start_from = ($page - 1) * 20; 
 //the sql statement
-$sql = (" SELECT service_id, servicename, pph, avgcost FROM `services` LIMIT $start_from, 20");
+$sql = (" SELECT service_id, servicename, pph, avgcost FROM `services` ORDER BY servicename LIMIT $start_from, 20");
 //retrieving the query results
 $result = selectquery($sql, $dbh);
 ?>

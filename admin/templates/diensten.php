@@ -79,10 +79,12 @@ if(isset ( $_POST ['option'] )){
 	}
 }
 
-$sth = $dbh->query ( "SELECT * FROM services" ); // Haal alle diensten uit de
+$sth = $dbh->query ( "SELECT * FROM services ORDER BY servicename" ); // Haal alle diensten uit de
 // database
 $sth->execute ();
 $res = $sth->fetchAll ( PDO::FETCH_ASSOC );
+
+// Functie om artikelen op te halen
 
 function haalartikelop($id) {
 	$dbh = connectToDatabase ();

@@ -18,6 +18,11 @@ textarea {
     resize: none;
 }
 
+input[type="submit"],
+input[type="button"] {
+	cursor: pointer;
+}
+
 input[type="text"],
 input[type="password"],
 textarea {
@@ -331,6 +336,7 @@ table input[type="text"] {
 
 #archivemonth{
     margin-left: 5px;
+    margin-bottom: 2px;
     list-style: none;
     padding: 5px;
     border: #7a8bac thin solid;
@@ -383,6 +389,7 @@ table input[type="text"] {
 }
 
 #dalink{
+    text-align: center;
     border: 2px solid;
     border-radius:10px;
     -moz-border-radius:10px; /* Old Firefox */

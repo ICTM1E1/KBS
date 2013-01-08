@@ -78,10 +78,23 @@ if (isset($_POST['vraagaan']))
     {
     	$errors[] = 'U moet een geldig telefoon nummer opgeven.';
     }
+    $explode_date = explode('-', $date);
     if($date == '')
     {
     	$errors[] = 'U moet een datum opgeven.';
-    }    
+    }
+    else if(count($explode_date) != 3)
+    {
+    	$errors[] = 'U moet een geldige datum opgeven.';
+    } 
+    else if(strlen($explode_date) == 4)
+    {
+    	$errors[] = 'U moet een geldige datum opgeven.';
+    }
+    else if ($date == '00-00-000')
+    {
+    	$errors[] = 'U moet een datum opgeven.';
+    }
     if($start_time == '')
     {
     	$errors[] = 'U moet een start tijd opgeven.';
@@ -153,6 +166,37 @@ if (isset($_POST['vraagaan']))
 			// Mail it
 			if(mail($to, $subject, $message, $headers))
 			{
+				// subject
+				$subject = 'Aanvraag dienst - ' . $dienst . ' - ' . $date;
+					
+				// message
+				$message = '
+					' . $name . ' heeft <strong>' . $dienst . '</strong> aangevraagd met de volgende gegevens:<br /><br />
+					Dienst: ' . $dienst . '<br />
+					Datum: ' . $date . '<br />
+					Begin tijd: ' . $start_time . '<br />
+					Eind tijd: ' . $end_time . '<br />
+					Locatie: ' . $location . '<br />
+					Beschrijving: ' . $description . '<br /><br />
+					Persoons gegevens:<br /><br />
+					Naam: ' . $name . '<br />
+					E-mail adres: ' . $email . '<br />
+					Adres: ' . $address . '<br />
+					Postcode: ' . $zipcode . '<br />
+					Woonplaats: ' . $residence . '<br />
+					Telefoon nummer: ' . $telephone . '<br />
+					Mobiel Nummer: ' . $mobile . '<br />
+				';
+					
+				// To send HTML mail, the Content-type header must be set
+				$headers  = 'MIME-Version: 1.0' . "\r\n";
+				$headers .= 'Content-type: text/html; charset=utf-8' . "\r\n";
+					
+				// Additional headers
+				$headers .= 'To: <' . EMAIL_KLANT . '>' . "\r\n";
+				$headers .= 'From: ' . WEBSITE_NAAM . ' <' . EMAIL_AFZENDER . '>' . "\r\n";
+				
+				mail(EMAIL_KLANT, $subject, $message, $headers);
 				
 				header('location: /dienstaanvraag/' . $_GET['id'] . '/gelukt');
 			}

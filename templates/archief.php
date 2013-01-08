@@ -24,7 +24,7 @@ $datetoday = date("Y");
 	<ul>
 	    <?php
 	    //go through and display every year
-	    for ($iy = $datetoday; $iy >= 2012; $iy = $iy - 1) {
+	    for ($iy = $datetoday; $iy >= 2013; $iy = $iy - 1) {
 		$dyear = $iy;
 		echo ("<div id='archiveyear'><h2>" . $dyear . "</h2>");
 		//go through every month
