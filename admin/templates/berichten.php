@@ -18,22 +18,22 @@ if(isset($_GET['status'])) {
     $statusText = "Bericht verzonden";
 }
 
-if(isset($_GET['name'])) {
-    $sth = $dbh->prepare("SELECT id FROM user_data WHERE naam=:naam");
-    $sth->bindParam(":naam", $_GET['name']);
-    $sth->execute();
-    $user = $sth->fetchAll(PDO::FETCH_ASSOC);
-    $id = $naam[0]['id'];
-    $naam = $_GET['name'];
+if(isset($_GET['naam'])) {
+    $naam = $_GET['naam'];
     
-    $sth = $dbh->prepare("SELECT id,titel,afzender,datum,gelezen FROM berichten WHERE afzender=:name ORDER BY gelezen ASC, datum DESC");
-    $sth->bindParam(":name", $id);
+    $sth = $dbh->prepare("SELECT id,titel,afzender,datum,gelezen,naam FROM berichten JOIN user_data ON afzender=user_id WHERE afzender=:name ORDER BY gelezen ASC, datum DESC");
+    $sth->bindParam(":name", $naam);
     $sth->execute();
     
     $res = $sth->fetchAll(PDO::FETCH_ASSOC);
-    print_r($res);    
 } elseif(isset($_POST['search'])) {
-    // zoek
+    $search = "%".$_POST['search']."%";
+    
+    $sth = $dbh->prepare("SELECT id,titel,afzender,gelezen,datum,naam FROM berichten JOIN user_data ON afzender=user_id WHERE ontvanger='1' AND titel LIKE :search ORDER BY gelezen ASC, datum DESC");
+    $sth->bindParam(":search", $search);
+    $sth->execute();
+    
+    $res = $sth->fetchAll(PDO::FETCH_ASSOC);
 } else {
     $sth = $dbh->prepare("SELECT id,titel,afzender,datum,gelezen,naam FROM berichten JOIN user_data ON afzender=user_id WHERE ontvanger='1' ORDER BY gelezen ASC, datum DESC");
     $sth->execute();
@@ -49,7 +49,7 @@ if(isset($_GET['name'])) {
 <form action="" method="post">
     <input type="button" onclick="window.location = '/admin/berichten/nieuw'" value="Nieuw"/>
     <input type="submit" name="option" value="Verwijderen"/>
-    <br/>
+    <br/><br/>
     <input type="text" name="search" placeholder="Zoeken..."/>
     <br/><br/>
     <?php 

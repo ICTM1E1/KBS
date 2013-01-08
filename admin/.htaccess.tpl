@@ -27,6 +27,7 @@ RewriteRule ^berichten/nieuw$ /admin/index.php?p=nieuwbericht [NC]
 RewriteRule ^berichten/nieuw/([a-zA-Z]+)$ /admin/index.php?p=nieuwbericht&naam=$1 [NC]
 RewriteRule ^berichten/succes$ /admin/index.php?p=berichten&status=succes [NC]
 RewriteRule ^berichten/faal$ /admin/index.php?p=nieuwbericht&status=faal [NC]
+RewriteRule ^berichten/([0-9]+)$ /admin/index.php?p=berichten&naam=$1 [NC]
 
 RewriteRule ^clienten/nieuw$ /admin/index.php?p=bewerkclienten&option=nieuw [NC]
 RewriteRule ^clienten/bewerk/([0-9]+)$ /admin/index.php?p=bewerkclienten&option=bewerk&id=$1 [NC]

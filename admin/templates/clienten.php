@@ -107,13 +107,22 @@ if (isset($_POST['option']) && isset($_POST['id'])) {
 	
     <?php
     foreach($res as $row) {
+	$id = $row['id'];
+	$unread = 0;
+	
+	$sth = $dbh->prepare("SELECT id FROM berichten WHERE afzender=:id AND gelezen=0");
+	$sth->bindParam(":id", $id);
+	$sth->execute();
+	if($sth->rowCount()) {
+	    $unread++;
+	}
     ?>
 	<tr>
 	    <td class="center"><input type="checkbox" value="<?php echo($row['id'])?>" name="id[]"/></td>
-	    <td><?php echo("<a href=/admin/clienten/bewerk/".$row['id'].">".$row['username'])."</a>" ?></td>
+	    <td><?php echo("<a href=/admin/clienten/bewerk/".$id.">".$row['username'])."</a>" ?></td>
 	    <td><?php echo($row['naam']); ?></td>
 	    <td><?php echo($row['email']); ?></td>
-	    <td> Link (Totaal) (Ongelezen) </td>
+	    <td><a href="/admin/berichten/<?php echo($row['id']);?>">Berichten</a> <?php echo($unread > 0 ? "<b>(".$unread.")</b>" : ""); ?> </td>
 	    <td><?php echo("<a href=/admin/berichten/nieuw/".$row['username'].">(plaatje)</a>"); ?>
 	</tr>
     
