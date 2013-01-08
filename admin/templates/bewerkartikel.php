@@ -181,8 +181,12 @@ if($option2 == 'renew'){
 			<td colspan="2">Titel:</td>
 		</tr>
 		<tr>
+			<?php if($title != 'Home'):?>
 			<td colspan="2"><input name="title" type="text" size="80"
 				value="<?php echo $title; ?>" /></td>
+			<?php else:?>
+				<td><strong><?php echo $title; ?></strong></td>
+			<?php endif;?>
 		</tr>
 		<tr>
 			<td width="150">Categorie:</td>
@@ -224,13 +228,15 @@ if($option2 == 'renew'){
 		
 		
 		<tr />
-		<tr>
-			<td>Status:</td>
-			<td><select name="published">
-					<option value="1" <?php echo $published; ?>>Gepubliceerd</option>
-					<option value="0" <?php echo $unpublished; ?>>Gedepubliceerd</option>
-			</select></td>
-		</tr>
+		<?php if($title != 'Home'):?>
+			<tr>
+				<td>Status:</td>
+				<td><select name="published">
+						<option value="1" <?php echo $published; ?>>Gepubliceerd</option>
+						<option value="0" <?php echo $unpublished; ?>>Gedepubliceerd</option>
+				</select></td>
+			</tr>
+		<?php endif;?>
 		<tr>
 			<td colspan="2"><input type="submit" value="Opslaan" name="submit" />
 				<input type="button" name="Cancel" value="Annuleren"

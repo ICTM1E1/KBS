@@ -279,7 +279,11 @@ function getAgendaMonth($month = false, $year = false)
 				if($row['start_datum'] == $date)
 				{
 					$cal[$week][$day]['appointments'][] = $row;
-					unset($appointments[$key]);
+				}
+				else if(strtotime($row['start_datum']) < strtotime($date) && strtotime($date) <= strtotime($row['eind_datum']) && $row['eind_datum'] != '0000-00-00')
+				{
+					
+					$cal[$week][$day]['appointments'][] = $row;
 				}
 			}
 			
@@ -523,10 +527,10 @@ function retreivearchive($dyear, $dmonth, $dbh)
 {
 	// sql statement (retreiving the published news and order it by date it was
 	// last changed at)
-	$sql = "SELECT ID, date_edited, title, TEXT, published
-	    FROM article
-	    WHERE (cat_id =11 AND published =1)
-		    AND (date_edited LIKE  '%$dyear-$dmonth-%')
+	$sql = "SELECT A.ID, A.date_edited, A.title, A.TEXT, A.published
+	    FROM article A JOIN category C ON A.cat_id = C.cat_id
+	    WHERE (name='Actualiteiten' AND A.published =1)
+		    AND (A.date_edited LIKE  '%$dyear-$dmonth-%')
 	    ORDER BY date_edited DESC";
 	// executing the query
 	$sth = $dbh->prepare($sql);
@@ -621,4 +625,103 @@ function validEmail($email, $skipDNS = false)
 	}
 	return $isValid;
 }
-?>
+
+function idarticle($dbh){
+    
+    $sql='SELECT * FROM article';
+    $sth=$dbh->prepare($sql);
+    $sth-> execute();
+    $result = $sth->fetchAll(PDO::FETCH_ASSOC);
+    $n = count($result);
+    $num = $n+1;
+    return $num;
+}
+
+/*
+ * @author laughing-buddha.net 
+ * @desc   Maak een willekeurig wachtwoord aan.
+ */
+ function generatePassword ($length = 8)
+  {
+
+    // start with a blank password
+    $password = "";
+
+    // define possible characters - any character in this string can be
+    // picked for use in the password, so if you want to put vowels back in
+    // or add special characters such as exclamation marks, this is where
+    // you should do it
+    $possible = "2346789bcdfghjkmnpqrtvwxyzBCDFGHJKLMNPQRTVWXYZ";
+
+    // we refer to the length of $possible a few times, so let's grab it now
+    $maxlength = strlen($possible);
+  
+    // check for length overflow and truncate if necessary
+    if ($length > $maxlength) {
+      $length = $maxlength;
+    }
+	
+    // set up a counter for how many characters are in the password so far
+    $i = 0; 
+    
+    // add random characters to $password until $length is reached
+    while ($i < $length) { 
+
+      // pick a random character from the possible ones
+      $char = substr($possible, mt_rand(0, $maxlength-1), 1);
+        
+      // have we already used this character in $password?
+      if (!strstr($password, $char)) { 
+        // no, so it's OK to add it onto the end of whatever we've already got...
+        $password .= $char;
+        // ... and increase the counter by one
+        $i++;
+      }
+
+    }
+
+    // done!
+    return $password;
+
+  }
+  
+function get_requestedAppointments()
+{
+	$db = connectToDatabase();
+	$sql = "
+		SELECT *
+		FROM `dienst_aanvragen`
+		WHERE `status` = 'aangevraagd'
+		ORDER BY `datum`
+	";
+	$sth = $db->prepare($sql);
+	$sth->execute();
+	$requested_appointments = $sth->fetchAll(PDO::FETCH_ASSOC);
+	
+	return $requested_appointments;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -381,11 +381,15 @@ table input[type="text"] {
 }
 
 .page {
+    border-color: #768093 transparent;
+    border-style: solid;
+    border-width: 8px;
     text-align: left;
     overflow: auto;
 }
 
 #dalink{
+    text-align: center;
     border: 2px solid;
     border-radius:10px;
     -moz-border-radius:10px; /* Old Firefox */

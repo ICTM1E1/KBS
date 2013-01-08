@@ -22,6 +22,18 @@ RewriteRule ^artikel/([a-zA-Z]+)$ /admin/index.php?p=artikel&case=$1 [NC]
 RewriteRule ^downloads/delete/([0-9]+)$ /admin/index.php?p=downloads&action=delete&ID=$1 [NC]
 RewriteRule ^downloads/([0-9]+)$ admin/index.php?p=downloads&page=$1 [NC]
 
+RewriteRule ^bericht/([0-9]+)$ /admin/index.php?p=bericht&id=$1 [NC]
+RewriteRule ^berichten/nieuw$ /admin/index.php?p=nieuwbericht [NC]
+RewriteRule ^berichten/nieuw/([a-zA-Z]+)$ /admin/index.php?p=nieuwbericht&naam=$1 [NC]
+RewriteRule ^berichten/succes$ /admin/index.php?p=berichten&status=succes [NC]
+RewriteRule ^berichten/faal$ /admin/index.php?p=nieuwbericht&status=faal [NC]
+RewriteRule ^berichten/([0-9]+)$ /admin/index.php?p=berichten&naam=$1 [NC]
+
+RewriteRule ^clienten/nieuw$ /admin/index.php?p=bewerkclienten&option=nieuw [NC]
+RewriteRule ^clienten/bewerk/([0-9]+)$ /admin/index.php?p=bewerkclienten&option=bewerk&id=$1 [NC]
+RewriteRule ^clienten/pwreset/([0-9]+)$ /admin/index.php?p=bewerkclienten&option=pwreset&id=$1 [NC]
+RewriteRule ^clienten/verwijder/([0-9]+)$ /admin/index.php?p=clienten [NC]
+
 RewriteRule ^categorie/nieuw$ /admin/index.php?p=bewerkcategorie&option=new [NC]
 RewriteRule ^categorie/bewerk/([0-9]+)$ /admin/index.php?p=bewerkcategorie&option=edit&id=$1 [NC]
 RewriteRule ^categorie/verwijder/([0-9]+)$ /admin/index.php?p=categorie&option=delete&id=$1 [NC]

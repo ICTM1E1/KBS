@@ -65,6 +65,12 @@ if(isset($_POST['save-agenda-point']))
 	$location = $_POST['location'];
 	$description = $_POST['description'];
 	$start_date = $_POST['start-date'];
+	$explode_start_date = explode('-', $start_date);
+	if(count($explode_start_date) != 3)
+	{
+		$errors[] = 'U moet een geldige start datum opgeven';
+	}
+	
 	
 	if($start_date == '')
 	{
@@ -195,7 +201,16 @@ if(isset($_POST['save-agenda-point']))
 	else if(!$requested && count($errors) == 0){
 		
 		$agenda_point_name = $_POST['title'];
+		if($agenda_point_name == '')
+		{
+			$errors[] = 'U moet een geldige titel opgeven';
+		}
 		$end_date = $_POST['end-date'];
+		$explode_end_date = explode('-', $end_date);
+		if(count($explode_end_date) != 3)
+		{
+			$errors[] = 'U moet een geldige start datum opgeven';
+		}
 		$whole_day = isset($_POST['whole-day']) && $_POST['whole-day'] == 'yes' ? 'true':'false';
 		$service = $_POST['service'];
 		
@@ -244,13 +259,16 @@ if(isset($_POST['save-agenda-point']))
 		//echo $q;exit;
 		$sth = $db->prepare($sql);
 		
-		if(!$sth->execute($parameters))
+		if(count($errors) == 0)
 		{
-			var_dump($sth->errorInfo());exit;
+			if(!$sth->execute($parameters))
+			{
+				var_dump($sth->errorInfo());exit;
+			}
+			
+			header('location: /admin/agenda');
+			exit;
 		}
-		
-		header('location: /admin/agenda');
-		exit;
 	}
 }
 
