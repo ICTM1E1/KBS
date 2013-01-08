@@ -62,13 +62,11 @@ $zoekwoord = $_SESSION['zoekresultaat'] ? $_SESSION['zoekresultaat'] : $zoekwoor
 	    </div>
 	    <?php
 	}
-
 //Als er geen overeenkomende zoekresultaten gevonden zijn, komt deze foutmelding er te staan
     } else {
 	echo 'Geen zoekresultaten gevonden, probeer iets anders.';
-    }
-    
-    
+    }   
+//Querie voor alle pagina's na pagina 1    
     $sql2 = "SELECT * 
         FROM article 
         WHERE title LIKE '%$zoekwoord%'

@@ -12,7 +12,8 @@ if (isset($_POST["verstuur"])){
     $onderwerp = $_POST['onderwerp'];
     $vraag = $_POST['vraag'];
 
-    $to = EMAIL_KLANT;   //Eigenaar's email, dus gerelateerde van Caspar (nu voor testen nog mijn e-mail
+    //Eigenaar's email, dus gerelateerde van Caspar (nu voor testen nog mijn e-mail
+    $to = EMAIL_KLANT;   
     $subject = 'Vraag van bezoeker '.$naam;
 
     //Hier de info over de mail en de vraag
@@ -25,7 +26,7 @@ if (isset($_POST["verstuur"])){
     $headers = 'From: ' .EMAIL_KLANT. '\r\n';
     $headers .= 'Reply-To: '.$email."\r\n";
     
-    //De functie waarbij de mail verstuurd wordt, of niet verstuurd als de gegevens niet ingevuld zijn of niet correct ingevuld
+    //De functie waarbij de mail verstuurd wordt, of niet verstuurd als de gegevens niet ingevuld of niet correct ingevuld zijn.
     $mail_status = mail($to, $subject, $message, $headers);
     if (!$mail_status) { 
       echo '<div class="message_error"><p>Helaas, het versturen van de mail is mislukt</p></div>';   
