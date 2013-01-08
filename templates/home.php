@@ -1,22 +1,28 @@
 <?php
 /*
- * @author Caspar crop
+ * @author Caspar crop && Robert-John van  Doesburg
  * @klas ICT M1 E1
  * @projectGroup SSJ
  */
-$dbh=  connectToDatabase();
+
+$dbh = connectToDatabase ();
+
+$sth = $dbh->prepare("SELECT article_id FROM menu_item WHERE parent_item='Home' and child_item='Home'");
+$sth->execute();
+$res = $sth->fetch(PDO::FETCH_ASSOC);
+$id = $res['article_id'];
+
+$sth = $dbh->prepare ( "SELECT * FROM article WHERE ID=:id" );
+$sth->bindParam(":id", $id);
+$sth->execute();
+
+$res = $sth->fetch(PDO::FETCH_ASSOC);
+
 ?>
+
 <div>
     <div id="home-upper">
-	    Lage soms deel stad ad vast nu erin. Zij wie met vermijden nutteloos tinmijnen.
-	    Kan wegen wilde drong reden dal naast tin van. Stampers roestige pyrieten ad te. 
-	    Beroemde eveneens te laatsten contract te. Ten gronds weldra gevolg die passen steeds zonder. 
-	    Singapore inderdaad zee elk gedeelten ons tin afscheidt plaatsing afstanden. 
-	    En deze in ze dure mier liet. Al anson af noemt op kreeg omdat china.
-	    Wordt of ad begin varen en. Deel is ik alle te geen. Nu wijk zout te ze is acre.
-	    Andere ceylon om te kriang lieden. Monopolie bezwarend stroomend gesteente na of de afstanden overwaard nu.
-	    Ongunstige schoonheid karrijders af nu europeanen geruineerd weelderige. Is heuvel ruimer slotte er om.
-
+    	<?php echo $res['text'];?>
     </div>
     
     <div id="home-news">

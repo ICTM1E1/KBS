@@ -684,3 +684,44 @@ function idarticle($dbh){
     return $password;
 
   }
+  
+function get_requestedAppointments()
+{
+	$db = connectToDatabase();
+	$sql = "
+		SELECT *
+		FROM `dienst_aanvragen`
+		WHERE `status` = 'aangevraagd'
+		ORDER BY `datum`
+	";
+	$sth = $db->prepare($sql);
+	$sth->execute();
+	$requested_appointments = $sth->fetchAll(PDO::FETCH_ASSOC);
+	
+	return $requested_appointments;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

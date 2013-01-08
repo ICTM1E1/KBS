@@ -121,7 +121,7 @@ table.simple-table tr:nth-child(even) {
 }
 
 #wrapper {
-    min-width: 1080px;
+    min-width: 1030px;
     width: 100%;
     position: relative;
 }
@@ -152,7 +152,7 @@ table.simple-table tr:nth-child(even) {
     float: left;
     font-size: 20px;
     color: #fff;
-    padding: 0 15px;
+    padding: 0 0 0 15px;
     margin-top: 14px;
 }
 
@@ -166,6 +166,8 @@ table.simple-table tr:nth-child(even) {
 
 #menu ul li.login_menu_item {
     float: right;
+	padidng-left: 0;
+	padding-right: 15px;
 }
 
 #content {
@@ -517,6 +519,11 @@ table.simple-table tr:nth-child(even) {
 .page {
     text-align: left;
     overflow: auto;
+}
+
+.home .requested_appointments table tr td:first-child{
+	width: 200px;
+	font-weight: bold;
 }
 
 /*! jQuery UI - v1.9.2 - 2012-12-04
