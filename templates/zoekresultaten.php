@@ -15,7 +15,7 @@ if(isset($_POST['zoekwoord123']) && !empty($_POST['zoekwoord123'])) {
     $_SESSION["zoekresultaat"] = $zoekwoord;
 }
 
-if($zoekwoord == ""){
+if(empty($zoekwoord)){
     echo "Geen zoekopdracht ingevuld, vul a.u.b. een zoekopdracht in";
 }
 
