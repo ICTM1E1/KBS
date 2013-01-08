@@ -104,7 +104,13 @@ if (isset($_POST['search']) && !empty($_POST['search'])) { // Als er ergens op g
 	<?php
 	foreach ($res as $row) { // Loop door SQL-resultaten
 	    echo ("<tr>");
-	    echo ("<td class=\"center\"><input type=\"checkbox\" value=" . $row ['ID'] . " name=id[]/></td>");
+	    if($row ['title'] == 'Home')
+	    {
+	    	echo '<td></td>';
+	    }
+	    else {
+	    	echo ("<td class=\"center\"><input type=\"checkbox\" value=" . $row ['ID'] . " name=id[]/></td>");
+	    }
 	    echo ("<td><a href='/admin/artikel/bewerk/" . $row ['ID'] . "'>" . $row ['title'] . "</a></td>"); // Print
 	    // de
 	    // titel
