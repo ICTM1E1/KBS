@@ -3,9 +3,6 @@
 if(isset($_POST['submit'])) {
     $dbh = connectToDatabase();
     
-    echo($_POST['id']);
-    echo($_POST['user']);
-    
     $id = $_POST['id'];
     $user = $_POST['user'];
     $name = $_POST['name'];
@@ -21,10 +18,19 @@ if(isset($_POST['submit'])) {
 	exit;
     }
     
+    if(!validEmail($email)) {
+	echo("Het e-mail adres dat u heeft ingevoerd is onjuist. U heeft ingevoerd: \"".$email."\"");
+	exit;
+    }
+    
     if($id == -1) {
 	$sth = $dbh->prepare("INSERT INTO users (username, password) VALUES(:user, :pass)");
 	$sth->bindParam(":user", $user);
-	$sth->bindParam(":pass", hash('sha256', 'test'));
+	$pass = generatePassword(6);
+	// MAAK MAIL
+
+	$tmp = hash('sha256', $pass);
+	$sth->bindParam(":pass", $tmp);
 	$sth->execute();
 	
 	$new_id = $dbh->lastInsertId();
@@ -38,12 +44,14 @@ if(isset($_POST['submit'])) {
 	$sth->bindParam(":tel", $telnr);
 	$sth->bindParam(":mob", $mob);
 	$sth->bindParam(":email", $email);
+	$sth->execute();
     }else{
 	$sth = $dbh->prepare("UPDATE users SET username=:user WHERE id=:id");
 	$sth->bindParam(":user", $user);
 	$sth->bindParam(":id", $id);
+	$sth->execute();
 
-	$sth = $dbh->prepare("UPDATE user_data SET name=:name,email=:email,adres=:adres,postcode=:post,woonplaats=:woonp,telefoon=:telnr,mobiel=:mob WHERE user_id=:id");
+	$sth = $dbh->prepare("UPDATE user_data SET naam=:name,email=:email,adres=:adres,postcode=:post,woonplaats=:woonp,telefoon=:telnr,mobiel=:mob WHERE user_id=:id");
 	$sth->bindParam(":name", $name);
 	$sth->bindParam(":email", $email);
 	$sth->bindParam(":adres", $adres);
@@ -56,43 +64,8 @@ if(isset($_POST['submit'])) {
     }
 }
 
-if(isset($_GET['option'])) {
-    $dbh = connectToDatabase();
-    
-    if($_GET['option'] == "verwijder") { 
-	$IDs = $_GET['id[]'];
-	$IDs = implode(",", $IDs);
-	$IDs = mysql_real_escape_string($IDs);
-	
-	$sth = $dbh->query("DELETE FROM user_data WHERE ID IN (".$IDs.")");
-	$result = $sth->execute();
-	    
-	if(!$result) {
-	    // todo after merge
-	}
-    } elseif($_GET['option'] == "pwreset") {
-	$IDs = $_GET['id[]'];
-	
-	foreach($IDs as $row) {
-	    $pw = "";
-	    
-	    $sth = $dbh->prepare("SELECT email FROM user_data WHERE user_id=:id");
-	    $sth->bindParam(":id", $row);
-	    $sth->execute();
-	    $res = $sth->fetchAll(PDO::FETCH_ASSOC);
-	    $email = $res[0];
-	    
-	    mail($email,"Uw wachtwoord is gereset","Blah");
-	    
-	    $sth = $dbh->prepare("UPDATE users SET password=:pw WHERE id=:id");
-	    $sth->bindParam(":pw", $pw);
-	    $sth->bindParam(":id", $row);
-	    //$sth->execute();
-	}
-    }
-}
-
 if($_GET['option'] == "bewerk") { 
+    $dbh = connectToDatabase();
     $id = $_GET['id'];
     
     $sth = $dbh->prepare("SELECT username, naam, email, adres, postcode, woonplaats, telefoon, mobiel FROM user_data UD JOIN users U on UD.user_id=U.id WHERE user_id=:id");
@@ -123,11 +96,11 @@ if($_GET['option'] == "nieuw") {
     $mobiel = "";
 }
 
-if($username && $email) {
+if(($username && $email) || $id == -1) {
 ?>
 
 <form action="" method="post">
-    <input name="id" type="hidden" value="<?echo($id);?>"/>
+    <input name="id" type="hidden" value="<?php echo($id);?>"/>
     <table class="simple-table">
 	<tr>
 	    <td colspan="2">Naam:</td>
@@ -162,7 +135,7 @@ if($username && $email) {
 	    <td colspan="2"><input name="mobiel" type="text" size="40" value="<?php echo($mobiel);?>"/></td>
 	</tr>
 	<tr>
-	    <td><input type="submit" name="submit" value="Opslaan"/> <input type="button" name="cancel" value="Annuleren" onclick="window.location = '/admin/clienten/'"/></td>
+	    <td><input type="submit" name="submit" value="Opslaan"/> <input type="button" name="cancel" value="Annuleren" onclick="window.location = '/admin/clienten'"/></td>
 	</tr>
     </table>
 </form>

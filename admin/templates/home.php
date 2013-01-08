@@ -9,7 +9,10 @@ if(isset($_POST['submitintro'])){
 //+category= Homepagina artikelen
 //published=1    
     
-    $sql="INSERT INTO article";
+    $sql="
+	INSERT INTO article (ID, cat_id, date_edited, title, )
+	VALUES ()
+";
     
     
     
