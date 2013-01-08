@@ -389,6 +389,7 @@ table input[type="text"] {
 }
 
 #dalink{
+    text-align: center;
     border: 2px solid;
     border-radius:10px;
     -moz-border-radius:10px; /* Old Firefox */
