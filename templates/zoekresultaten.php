@@ -10,16 +10,15 @@ Auteur: Maarten Engels
  * @projectGroup SSJ
  */
 //Het woord dat ingevuld wordt in de zoekbalk wordt opgehaald en gebruikt als attribuut voor de SQL-querie.
-if(isset($_POST['zoekwoord123']) && !empty($_POST['zoekwoord123'])) {
+if (isset($_POST['zoekwoord123']) && !empty($_POST['zoekwoord123'])) {
     $zoekwoord = mysql_real_escape_string($_POST["zoekwoord123"]);
     $_SESSION["zoekresultaat"] = $zoekwoord;
 }
 
-if(empty($zoekwoord)){
-    echo "Geen zoekopdracht ingevuld, vul a.u.b. een zoekopdracht in";
+//Als er geen zoekwoord is ingevuld, maar wel op het zoekveld of op de zoekknop is geklikt, geeft hij hier aan dat er geen zoekwoord is ingevuld
+if (empty($zoekwoord)) {
+    echo "Geen zoekopdracht ingevuld, vul a.u.b. een zoekopdracht in.";
 }
-
-
 
 //Zelfafhandelend formulier waarbij er naar resultatenpagina 1 gaat als er nog geen paginanummer is opgegeven
 if (isset($_GET["page"])) {
