@@ -3,10 +3,10 @@
 if(isset($_POST['submit'])) {
     $dbh = connectToDatabase();
     
-    echo($_GET['id']);
+    echo($_POST['id']);
     echo($_POST['user']);
     
-    $id = $_GET['id'];
+    $id = $_POST['id'];
     $user = $_POST['user'];
     $name = $_POST['name'];
     $email = $_POST['email'];
@@ -76,14 +76,17 @@ if($_GET['option'] == "bewerk") {
 }
 
 if($_GET['option'] == "nieuw") {
+    $id = -1;
     $name = "";
     $username = "";
     $email = "";
 }
+
+if($username && $email) {
 ?>
 
 <form action="" method="post">
-    <input name="id" type="hidden" value="<?echo($_GET['id']);?>"/>
+    <input name="id" type="hidden" value="<?echo($id);?>"/>
     <table class="simple-table">
 	<tr>
 	    <td colspan="2">Naam:</td>
@@ -102,3 +105,6 @@ if($_GET['option'] == "nieuw") {
 	</tr>
     </table>
 </form>
+
+<?php
+}?>
