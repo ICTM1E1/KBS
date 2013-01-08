@@ -523,10 +523,10 @@ function retreivearchive($dyear, $dmonth, $dbh)
 {
 	// sql statement (retreiving the published news and order it by date it was
 	// last changed at)
-	$sql = "SELECT ID, date_edited, title, TEXT, published
-	    FROM article
-	    WHERE (cat_id =11 AND published =1)
-		    AND (date_edited LIKE  '%$dyear-$dmonth-%')
+	$sql = "SELECT A.ID, A.date_edited, A.title, A.TEXT, A.published
+	    FROM article A JOIN category C ON A.cat_id = C.cat_id
+	    WHERE (name='Actualiteiten' AND A.published =1)
+		    AND (A.date_edited LIKE  '%$dyear-$dmonth-%')
 	    ORDER BY date_edited DESC";
 	// executing the query
 	$sth = $dbh->prepare($sql);
@@ -621,4 +621,16 @@ function validEmail($email, $skipDNS = false)
 	}
 	return $isValid;
 }
+
+function idarticle($dbh){
+    
+    $sql='SELECT * FROM article';
+    $sth=$dbh->prepare($sql);
+    $sth-> execute();
+    $result = $sth->fetchAll(PDO::FETCH_ASSOC);
+    $n = count($result);
+    $num = $n+1;
+    return $num;
+}
+
 ?>
