@@ -25,9 +25,9 @@ if(isset($_POST['search']) && !empty($_POST['search'])) {
 ?>
 
 <form action="" method="post">
-    <input type="button" onclick="window.location = '/admin/clients/new'" value="Nieuw"/>
-    <input type="button" onclick="window.location = '/admin/clients/remove'" value="Verwijderen"/>
-    <input type="button" onclick="window.location = '/admin/clients/pwreset'" value="Wachtwoord resetten"/>
+    <input type="button" onclick="window.location = '/admin/clienten/nieuw'" value="Nieuw"/>
+    <input type="button" onclick="window.location = '/admin/clienten/verwijder'" value="Verwijderen"/>
+    <input type="button" onclick="window.location = '/admin/clienten/pwreset'" value="Wachtwoord resetten"/>
     <br/><br/>
     <input type="text" placeholder="Zoeken..." name="search"/>
     <br/><br/>
@@ -46,11 +46,11 @@ if(isset($_POST['search']) && !empty($_POST['search'])) {
     ?>
 	<tr>
 	    <td class="center"><input type="checkbox" name="id[]" value="<?php echo($row['ID'])?>"/></td>
-	    <td><?php echo("<a href=/admin/clients/edit/".$row['ID'].">".$row['username'])."</a>" ?></td>
+	    <td><?php echo("<a href=/admin/clienten/bewerk/".$row['ID'].">".$row['username'])."</a>" ?></td>
 	    <td><?php echo($row['name']); ?></td>
 	    <td><?php echo($row['email']); ?></td>
 	    <td> Link (Totaal) (Ongelezen) </td>
-	    <td><?php echo("<a href=/admin/clients/sendmessage/".$row['ID'].">(plaatje)</a>"); ?>
+	    <td><?php echo("<a href=/admin/clienten/sendmessage/".$row['ID'].">(plaatje)</a>"); ?>
 	</tr>
     
     <?php
