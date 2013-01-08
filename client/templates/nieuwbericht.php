@@ -28,9 +28,6 @@ if(isset($_POST['submit'])) {
     if(empty($titel)) {
 	$style = "message_error";
 	$statusText = "Titel mag niet leeg zijn!";
-    } elseif(empty($ontv)) {
-	$style = "message_error";
-	$statusText = "Ontvanger mag niet leeg zijn!";
     } elseif(empty($bericht)) {
 	$style = "message_error";
 	$statusText = "Bericht mag niet leeg zijn!";
@@ -38,32 +35,22 @@ if(isset($_POST['submit'])) {
 	$dbh = connectToDatabase();
 	$datum = date("Y-m-d H:i:s", time());
 	
-	$sth = $dbh->prepare("SELECT id FROM users WHERE username=:ontv");
-	$sth->bindParam(":ontv", $ontv);
-	$sth->execute();
-	$res = $sth->fetchAll(PDO::FETCH_ASSOC);
+	$afz = $_SESSION['clientid'];
 	
-	if(empty($res)) {
-	    $style = "message_error";
-	    $statusText = "Ontvanger is niet geldig!";
-	}
-	
-	$ontv = $res[0]['id'];
-	
-	$sth = $dbh->prepare("INSERT INTO berichten (titel, afzender, ontvanger, bericht, datum) VALUES (:titel, '1', :ontv, :bericht, :datum)");
+	$sth = $dbh->prepare("INSERT INTO berichten (titel, afzender, ontvanger, bericht, datum) VALUES (:titel, :afz, '1', :bericht, :datum)");
 	$sth->bindParam(":titel", $titel);
-	$sth->bindParam(":ontv", $ontv);
+	$sth->bindParam(":afz", $afz);
 	$sth->bindParam(":bericht", $bericht);
 	$sth->bindParam(":datum", $datum);
 	$won = $sth->execute();
 	
 	if($won) {
-	    header("Location: /admin/berichten/succes");
+	    header("Location: /client/berichten/succes");
 	} else{
 	    $_SESSION['msg_titel'] = $titel;
 	    $_SESSION['msg_ontv'] = $ontv;
 	    $_SESSION['msg_bericht'] = $bericht;
-	    header("Location: /admin/berichten/faal");
+	    header("Location: /client/berichten/faal");
 	}
     }
 }
@@ -88,7 +75,7 @@ if(isset($_GET['naam'])) {
 	</tr>
 	<tr>
 	    <td>Gebruikersnaam ontvanger:</td>
-	    <td><input type="text" name="ontvanger"size="40" value="<?php echo($naam); ?>"/></td>
+	    <td><input type="text" disabled="true" name="ontvanger"size="40" value="Beheerder"/></td>
 	</tr>
 	<tr>
 	    <td colspan="2">Bericht:</td>
@@ -98,7 +85,7 @@ if(isset($_GET['naam'])) {
 	</tr>
 	<tr>
 	    <td><input type="submit" value="Versturen" name="submit"></td>
-	    <td><input type="button" value="Annuleren" onclick="window.location = '/admin/berichten'"/></td>
+	    <td><input type="button" value="Annuleren" onclick="window.location = '/client/berichten'"/></td>
 	</tr>
     </form>	
 </table>
