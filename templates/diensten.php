@@ -46,6 +46,11 @@ if (isset($_GET['id'])) {
 	    $datee = date("d-m-Y H:i:s", strtotime($row ['date_edited']));
 	    ?>
 	    <!--Display the article title-->
+	    <div id="dalink">
+	    <?php
+	    echo '<a href="/diensten"> Terug naar het diensten overzict</a>';
+	    ?> 
+	    </div>
 	    <div class="artikel" id="title">
 	        <h2><?php echo $row['title'] ?></h2>
 	    </div>
