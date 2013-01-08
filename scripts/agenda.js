@@ -248,8 +248,23 @@ $(document).ready(function()
 			var parent = $(this).parents('.ag-month-row');
 			var date = clicked_block.nextAll('.ag-date-display').val();
 			
+			start = $(this).children('.ag-appointment-start').val();
+			end = $(this).children('.ag-appointment-end').val();
+			time = start + ' - ' + end;
+			
+			if(start == '' && end == ''){
+				time = '';
+			}
+
+			$('#appointment-requested').val('');
+			if($(this).hasClass('ag-day-requested-appointment')){
+				$('#appointment-requested').val(true);
+			}
+			
 			$('#appointment-date').html(date);
 			$('#appointment-name').html($(this).children('.ag-appointment-name').val());
+			$('#appointment-location').html($(this).children('.ag-appointment-location').val());
+			$('#appointment-time').html(time);
 			$('#appointment-id').val($(this).children('.ag-appointment-id').val());
 			
 			showBubble('#bubble-edit-appointment', clicked_block, parent, true, $(this));
@@ -278,7 +293,8 @@ $(document).ready(function()
 			appointments.each(function(){
 				if($(this).hasClass(('ag-day-requested-appointment')))
 				{
-					appointments_html += '<div class="ag-bubble-all-appointments-row ag-day-row ag-bubble-all-appointments-requested">';
+					var status = $(this).children('.ag-appointment-status').val();
+					appointments_html += '<div class="ag-bubble-all-appointments-row ag-day-row ag-bubble-all-appointments-requested ag-bubble-appointments-reuested-status-' + status + '">';
 					appointments_html += $(this).html();
 					appointments_html += '</div>';
 				}
@@ -331,8 +347,15 @@ $(document).ready(function()
 	});
 	
 	$('#edit-existing-appointment').live('click', function(){
+		
 		var id = $('#appointment-id').val();
-		window.location.href = '/admin/agenda/bewerk/' + id;
+		var href = '/admin/agenda/bewerk/' + id;
+		
+		if($('#appointment-requested').val() != ''){
+			href += '/requested'
+		}
+		
+		window.location.href = href;
 	});
 	
 	$('.bubble-close').click(function(){

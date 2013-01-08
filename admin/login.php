@@ -28,7 +28,7 @@ if(isset($_POST['submit']))
 
             $user = $_POST['login'];   
             $pass = hash('sha256', $_POST['password']);
-
+	    
             $sth = $dbh->prepare("SELECT * FROM users WHERE username=:user AND password=:pass AND `admin` = 1");
             $sth->bindParam(":user", $user);
             $sth->bindParam(":pass", $pass);

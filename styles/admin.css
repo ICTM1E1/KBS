@@ -89,6 +89,10 @@ table.simple-table tr:nth-child(even) {
 	display: none;
 }
 
+.clear {
+	clear: both;
+}
+
 #login-form {
     width: 150px;
     height: 130px;
@@ -112,7 +116,7 @@ table.simple-table tr:nth-child(even) {
 }
 
 #wrapper {
-    min-width: 960px;
+    min-width: 1080px;
     width: 100%;
     position: relative;
 }
@@ -290,6 +294,8 @@ table.simple-table tr:nth-child(even) {
     background-color: #CAD6EC;
     border: 1px solid #768093;
     margin: 0 2px 2px;
+	height: 16px;
+	overflow: auto;
 }
 
 .agenda .ag-day-requested-appointment,
@@ -297,6 +303,21 @@ table.simple-table tr:nth-child(even) {
 	background-color: #cbecca;
     border: 1px solid #768093;
     margin: 0 2px 2px;
+}
+
+.agenda .appointment-status-goedgekeurd,
+.agenda .ag-bubble-appointments-reuested-status-goedgekeurd {
+	background-color: #cbecca;
+}
+
+.agenda .appointment-status-aangevraagd,
+.agenda .ag-bubble-appointments-reuested-status-aangevraagd {
+	background-color: #f7c98c;
+}
+
+.agenda .appointment-status-afgekeurd,
+.agenda .ag-bubble-appointments-reuested-status-afgekeurd {
+	background-color: #eccaca;
 }
 
 .agenda .ag-bubble-all-date {
@@ -390,8 +411,8 @@ table.simple-table tr:nth-child(even) {
 
 .bubble-content .appointment-options {
     border-top: 1px solid #7A8BAC;
-    bottom: 10px;
-    padding-top: 10px;
+    bottom: 6px;
+    padding-top: 6px;
     position: absolute;
     width: 310px;
 }
