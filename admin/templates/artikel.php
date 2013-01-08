@@ -62,13 +62,13 @@ if (isset($_GET ["case"])) {
 
 if (isset($_POST['search']) && !empty($_POST['search'])) { // Als er ergens op gezocht is, haal die artikelen op
     $search = "%" . $_POST['search'] . "%";
-    $sth = $dbh->prepare("SELECT A.ID,title,C.name AS catname,date_added,date_edited,A.published FROM article A JOIN category C ON A.cat_id = C.cat_id WHERE A.title LIKE :search ORDER BY ID");
+    $sth = $dbh->prepare("SELECT A.ID,title,C.name AS catname,date_added,date_edited,A.published FROM article A JOIN category C ON A.cat_id = C.cat_id WHERE A.title LIKE :search ORDER BY A.cat_id,date_added");
     $sth->bindParam(":search", $search);
     $sth->execute();
 
     $res = $sth->fetchAll(PDO::FETCH_ASSOC);
 } else { // Haal anders alle artikelen op
-    $sth = $dbh->query("SELECT A.ID,title,C.name AS catname,date_added,date_edited,A.published FROM article A JOIN category C ON A.cat_id = C.cat_id ORDER BY ID");
+    $sth = $dbh->query("SELECT A.ID,title,C.name AS catname,date_added,date_edited,A.published FROM article A JOIN category C ON A.cat_id = C.cat_id ORDER BY A.cat_id,date_added");
     $sth->execute();
 
     $res = $sth->fetchAll(PDO::FETCH_ASSOC);

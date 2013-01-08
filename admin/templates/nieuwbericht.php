@@ -14,7 +14,7 @@ if(isset($_GET['status'])) {
     $bericht = $_SESSION['msg_bericht'];
     
     $style = "message_error";
-    $statusText = "Versturen is mislukt.";
+    $statusText = "Versturen is mislukt. Controleer de gebruikersnaam.";
 } else {
     $titel = "";
     $bericht = "";
