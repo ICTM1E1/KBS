@@ -6,6 +6,8 @@ include_once(DOCROOT . 'inc/functions.inc.php'); // bevat functie om verbinding 
 if(isset($_GET['action']) && $_GET['action'] == 'logout')
 {
 	unset($_SESSION['client']);
+	unset($_SESSION['clientid']);
+	unset($_SESSION['clientname']);
 	session_destroy();
 	header('location:/client/login');
 	exit;
@@ -31,15 +33,18 @@ if(isset($_POST['submit']))
 
             $user = $_POST['login'];   
             $pass = hash('sha256', $_POST['password']);
-	    echo($pass);
+	    
             $sth = $dbh->prepare("SELECT id FROM users WHERE username=:user AND password=:pass");
             $sth->bindParam(":user", $user);
             $sth->bindParam(":pass", $pass);
             $sth->execute();
+	    $res = $sth->fetchAll(PDO::FETCH_ASSOC);
+	    
             if($sth->rowCount())
             {
             	$_SESSION['client'] = true;
-            	
+		$_SESSION['clientid'] = $res[0]['id'];
+		
             	header('location:/client/home');
             }
             else {

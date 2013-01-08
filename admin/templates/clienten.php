@@ -18,6 +18,7 @@ if(isset($_POST['search']) && !empty($_POST['search'])) {
 		ON `users`.`id` = `user_data`.`user_id` 
 	WHERE `users`.`admin` = 0
 	AND `users`.`username` LIKE :search OR `user_data`.`email` LIKE :search
+	OR `user_data`.`naam` LIKE :search
   ";
   $sth = $dbh->prepare($query);
   $sth->bindParam(":search", $search);
