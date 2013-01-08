@@ -39,7 +39,7 @@ if(!file_exists(DOCROOT . 'client/templates/' . $page . '.php'))
 					<ul>
 						<li><a href="/client/home">Home</a></li>
 						<li><a href="/client/agenda">Agenda</a></li>
-						<li><a href="/client/messages">Berichten</a></li>
+						<li><a href="/client/berichten">Berichten</a></li>
 						<li class="login_menu_item">
 							<a href="/client/logout">Uitloggen</a>
 						</li>

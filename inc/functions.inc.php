@@ -527,7 +527,7 @@ function retreivearchive($dyear, $dmonth, $dbh)
 	    FROM article
 	    WHERE (cat_id =11 AND published =1)
 		    AND (date_edited LIKE  '%$dyear-$dmonth-%')
-	    ORDER BY date_edited";
+	    ORDER BY date_edited DESC";
 	// executing the query
 	$sth = $dbh->prepare($sql);
 	$sth->execute();
