@@ -61,12 +61,12 @@ if(isset($_POST['search']) && !empty($_POST['search'])) {
     foreach($res as $row) {
     ?>
 	<tr>
-	    <td class="center"><input type="checkbox" name="id[]" value="<?php echo($row['ID'])?>"/></td>
-	    <td><?php echo("<a href=/admin/clienten/bewerk/".$row['ID'].">".$row['username'])."</a>" ?></td>
-	    <td><?php echo($row['name']); ?></td>
+	    <td class="center"><input type="checkbox" name="id[]" value="<?php echo($row['id'])?>"/></td>
+	    <td><?php echo("<a href=/admin/clienten/bewerk/".$row['id'].">".$row['username'])."</a>" ?></td>
+	    <td><?php echo($row['naam']); ?></td>
 	    <td><?php echo($row['email']); ?></td>
 	    <td> Link (Totaal) (Ongelezen) </td>
-	    <td><?php echo("<a href=/admin/clienten/sendmessage/".$row['ID'].">(plaatje)</a>"); ?>
+	    <td><?php echo("<a href=/admin/clienten/sendmessage/".$row['id'].">(plaatje)</a>"); ?>
 	</tr>
     
     <?php
