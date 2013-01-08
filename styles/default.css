@@ -18,6 +18,11 @@ textarea {
     resize: none;
 }
 
+input[type="submit"],
+input[type="button"] {
+	cursor: pointer;
+}
+
 input[type="text"],
 input[type="password"],
 textarea {
