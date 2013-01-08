@@ -33,6 +33,9 @@ if (isset($_POST['vraagaan']))
     $date = $_POST['date'];
     $start_time = $_POST['start_time'];
     $end_time = $_POST['end_time'];
+    $description = $_POST['description'];
+    $location = $_POST['location'];
+    
     $email_regex = "^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$";
     $zipcode_regex = '(^[1-9]{1}[0-9]{3}?[A-Z]{2}$)';
     $telephone_regex = '/^(((0)[1-9]{2}[0-9][-]?[1-9][0-9]{5})|((\\+31|0|0031)[1-9][0-9][-]?[1-9][0-9]{6}))$/';
@@ -86,14 +89,23 @@ if (isset($_POST['vraagaan']))
     if($end_time == '')
     {
     	$errors[] = 'U moet een eind tijd opgeven.';
+    }     
+    if($description == '')
+    {
+    	$errors[] = 'U moet een beschrijving opgeven.';
     }    
+    if($location == '')
+    {
+    	$errors[] = 'U moet een locatie opgeven.';
+    }   
     if(count($errors) == 0)
     {
+    	
     	$query = "
     		INSERT INTO `dienst_aanvragen`
-    			(`naam`, `email`, `adres`, `postcode`, `woonplaats`, `telefoon`, `mobiel`, `datum`, `begin_tijd`, `eind_tijd`, `dienst_id`, `status`)
+    			(`naam`, `email`, `adres`, `postcode`, `woonplaats`, `telefoon`, `mobiel`, `datum`, `start_tijd`, `eind_tijd`, `dienst_id`, `status`,`beschrijving`,`locatie`)
     		VALUES
-    			(:naam, :email, :adres, :postcode, :woonplaats, :telefoon, :mobiel, STR_TO_DATE(:datum, '%d-%m-%Y'), :begin_tijd, :eind_tijd, :dienst_id, 'aangevraagd')
+    			(:naam, :email, :adres, :postcode, :woonplaats, :telefoon, :mobiel, STR_TO_DATE(:datum, '%d-%m-%Y'), :begin_tijd, :eind_tijd, :dienst_id, 'aangevraagd', :beschrijving, :locatie)
     	";
     	$sth = $dbh->prepare($query);
     	$sth->bindParam(":naam", $name);
@@ -107,6 +119,8 @@ if (isset($_POST['vraagaan']))
     	$sth->bindParam(":begin_tijd", $start_time);
     	$sth->bindParam(":eind_tijd", $end_time);
     	$sth->bindParam(":dienst_id", $_GET['id']);
+    	$sth->bindParam(":beschrijving", $description);
+    	$sth->bindParam(":locatie", $location);
     	
     	if(!$sth->execute())
     	{
@@ -183,7 +197,7 @@ if (isset($_POST['vraagaan']))
 		</tr>
 		<tr>
 			<td>Mobiel</td>
-			<td><input type="text" name="mobile" value="<?php echo isset($mobile)?$mobile:''?>" />&nbsp;<small>(06-1234567890)</small></td>
+			<td><input type="text" name="mobile" value="<?php echo isset($mobile)?$mobile:''?>" />&nbsp;<small>(06-12345678)</small></td>
 		</tr>
 		<tr>
 			<td>Datum</td>
@@ -197,7 +211,7 @@ if (isset($_POST['vraagaan']))
 						<?php $half = ($i % 2 != 0)?'30':'00';?>
 						<?php $hour = floor($i / 2);?>
 						<?php $hour = date('H', mktime($hour,0,0, 1, 1, 1970));?>
-						<option value="<?php echo $hour . ':' . $half; ?>"><?php echo $hour . ':' . $half; ?></option>
+						<option <?php echo ($hour . ':' . $half == $start_time) ? 'selected="selected"':'';?> value="<?php echo $hour . ':' . $half; ?>"><?php echo $hour . ':' . $half; ?></option>
 					<?php endfor;?>
 				</select>
 				<select name="end_time">
@@ -205,7 +219,7 @@ if (isset($_POST['vraagaan']))
 						<?php $half = ($i % 2 != 0)?'30':'00';?>
 						<?php $hour = floor($i / 2);?>
 						<?php $hour = date('H', mktime($hour,0,0, 1, 1, 1970));?>
-						<option value="<?php echo $hour . ':' . $half; ?>"><?php echo $hour . ':' . $half; ?></option>
+						<option <?php echo ($hour . ':' . $half == $end_time) ? 'selected="selected"':'';?> value="<?php echo $hour . ':' . $half; ?>"><?php echo $hour . ':' . $half; ?></option>
 					<?php endfor;?>
 				</select>
 			</td>
@@ -215,12 +229,24 @@ if (isset($_POST['vraagaan']))
 			<td><strong><?php echo $dienst;?></strong></td>
 		</tr>
 		<tr>
+			<td>Locatie</td>
+			<td><input type="text" name="location" value="<?php echo isset($location)?$location:''?>" /></td>
+		</tr>
+		<tr>
+			<td>Beschrijving:</td>
+		</tr>
+		<tr>
+			<td colspan="2">
+				<textarea class="no-editor" name="description"><?php echo isset($description)?$description:''?></textarea>
+			</td>
+		</tr>
+		<tr>
 			<td><input type="hidden" name="service" value=""></td>
 			<td></td>
 		</tr>
 		<tr>
-			<td></td>
 			<td><input type="submit" name="vraagaan" value="Vraag aan!" /></td>
+			<td></td>
 		</tr>
 		<tr>
 			<td colspan="2"><small>Alle velden zijn verplicht<sup>1</sup></small></td>

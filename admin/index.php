@@ -50,7 +50,7 @@ if(!file_exists(DOCROOT . 'admin/templates/' . $page . '.php'))
 						<li><a href="/admin/admintarieven">Tarieven</a></li>
 						<li><a href="/admin/diensten">Diensten</a></li>
 						<li><a href="/admin/downloads">Downloads</a></li>
-						<li><a href="/admin/clients">Cli&euml;nten</a></li>
+						<li><a href="/admin/clienten">Cli&euml;nten</a></li>
 						<li><a href="/admin/menu">Menu Items</a></li>
 						<li class="login_menu_item">
 							<a href="/admin/logout">Uitloggen</a>

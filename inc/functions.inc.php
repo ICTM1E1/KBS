@@ -354,10 +354,28 @@ function getAgendaMonth($month = false, $year = false)
 				{
 					foreach($day['appointments'] as $key => $value)
 					{
+						$appointment_start = $value['start_tijd'] != null ? date('H:i',strtotime($value['start_tijd'])) : '';
+						$appointment_end = $value['eind_tijd'] != null ? date('H:i',strtotime($value['eind_tijd'])) : '';
+						if($value['hele_dag'] == 'true')
+						{
+							$appointment_start = '';
+							$appointment_end = '';
+						}
+						
+						$name = substr($value['naam'], 0, 30);
+						$name = strlen($value['naam']) > 30 ? $name . '...':$name;
+						
+						$name_long = substr($value['naam'], 0, 75);
+						$name_long = strlen($value['naam']) > 75 ? $name_long . '...':$name_long;
+						
+						
 						$hidden = $appointments_counter > $limit ? ' hidden':''; 
 						$data .= '<div class="ag-day-row ag-day-appointment' . $hidden . '">';
-						$data .= '<span>' . $value['naam'] . '</span>';
-						$data .= '<input type="hidden" value="' . $value['naam'] . '" class="ag-appointment-name"/>';
+						$data .= '<span>' . $name . '</span>';
+						$data .= '<input type="hidden" value="' . $name_long . '" class="ag-appointment-name"/>';
+						$data .= '<input type="hidden" value="' . $value['locatie'] . '" class="ag-appointment-location"/>';
+						$data .= '<input type="hidden" value="' . $appointment_start . '" class="ag-appointment-start"/>';
+						$data .= '<input type="hidden" value="' . $appointment_end . '" class="ag-appointment-end"/>';
 						$data .= '<input type="hidden" value="' . $value['id'] . '" class="ag-appointment-id"/>';
 						$data .= '</div>';
 						
@@ -369,11 +387,25 @@ function getAgendaMonth($month = false, $year = false)
 				{
 					foreach($day['requested_appointments'] as $key => $value)
 					{
+						$appointment_start = $value['start_tijd'] != null ? date('H:i',strtotime($value['start_tijd'])) : '';
+						$appointment_end = $value['eind_tijd'] != null ? date('H:i',strtotime($value['eind_tijd'])) : '';
+						$status = ' appointment-status-' . $value['status'];
+						
+						$name = substr($value['naam'], 0, 30);
+						$name = strlen($value['naam']) > 30 ? $name . '...':$name;
+						
+						$name_long = substr($value['naam'], 0, 75);
+						$name_long = strlen($value['naam']) > 75 ? $name_long . '...':$name_long;
+						
 						$hidden = $appointments_counter > $limit ? ' hidden':''; 
-						$data .= '<div class="ag-day-row ag-day-appointment ag-day-requested-appointment' . $hidden . '">';
+						$data .= '<div class="ag-day-row ag-day-appointment ag-day-requested-appointment' . $hidden . $status . '">';
 						$data .= '<span>' . $value['naam'] . '</span>';
 						$data .= '<input type="hidden" value="' . $value['naam'] . '" class="ag-appointment-name"/>';
+						$data .= '<input type="hidden" value="' . $value['locatie'] . '" class="ag-appointment-location"/>';
+						$data .= '<input type="hidden" value="' . $appointment_start . '" class="ag-appointment-start"/>';
+						$data .= '<input type="hidden" value="' . $appointment_end . '" class="ag-appointment-end"/>';
 						$data .= '<input type="hidden" value="' . $value['id'] . '" class="ag-appointment-id"/>';
+						$data .= '<input type="hidden" value="' . $value['status'] . '" class="ag-appointment-status"/>';
 						$data .= '</div>';
 						
 						$appointments_counter++;
