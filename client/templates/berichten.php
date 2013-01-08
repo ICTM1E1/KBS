@@ -7,9 +7,16 @@
 
 
 $dbh = connectToDatabase();
+$style = "";
+$statusText = "";
 
 if(isset($_POST['submit'])) {
     
+}
+
+if(isset($_GET['status'])) {
+    $style = "message_success";
+    $statusText = "Bericht verzonden";
 }
 
   
@@ -34,6 +41,10 @@ if(isset($_POST['search'])) {
     $res = $sth->fetchAll(PDO::FETCH_ASSOC);
 }
 ?>
+
+<div class="<?php echo $style; ?>">
+    <p><?php echo $statusText; ?></p>
+</div>
 
 <form action="" method="post">
     <input type="button" onclick="window.location = '/client/berichten/nieuw'" value="Nieuw"/>

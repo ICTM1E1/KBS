@@ -24,9 +24,10 @@ if(isset($_GET['id'])) {
     if($res[0]['afzender'] == 1) {
 	$naam = "Beheerder";
     } else{
-	$sth = $dbh->prepare("SELECT naam FROM user_data WHERE id=:afz");
+	$sth = $dbh->prepare("SELECT naam FROM user_data WHERE user_id=:afz");
 	$sth->bindParam(":afz", $res[0]['afzender']);
 	$sth->execute();
+	
 	$res1 = $sth->fetchAll(PDO::FETCH_ASSOC);
 	$naam = $res1[0]['naam'];
     }

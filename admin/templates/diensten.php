@@ -84,6 +84,8 @@ $sth = $dbh->query ( "SELECT * FROM services ORDER BY servicename" ); // Haal al
 $sth->execute ();
 $res = $sth->fetchAll ( PDO::FETCH_ASSOC );
 
+// Functie om artikelen op te halen
+
 function haalartikelop($id) {
 	$dbh = connectToDatabase ();
 	$sth = $dbh->query ( "SELECT * FROM article WHERE ID=$id" ); // Haal alle diensten uit de database

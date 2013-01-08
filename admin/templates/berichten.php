@@ -18,26 +18,27 @@ if(isset($_GET['status'])) {
     $statusText = "Bericht verzonden";
 }
 
-if(isset($_GET['name'])) {
-    $sth = $dbh->prepare("SELECT id FROM user_data WHERE naam=:naam");
-    $sth->bindParam(":naam", $_GET['name']);
-    $sth->execute();
-    $user = $sth->fetchAll(PDO::FETCH_ASSOC);
-    $id = $naam[0]['id'];
+if(isset($_GET['naam'])) {
+    $naam = $_GET['naam'];
     
-    $sth = $dbh->prepare("SELECT id,titel,afzender,datum FROM berichten WHERE afzender=:name ORDER BY datum ASC");
-    $sth->bindParam(":name", $id);
+    $sth = $dbh->prepare("SELECT id,titel,afzender,datum,gelezen,naam FROM berichten JOIN user_data ON afzender=user_id WHERE afzender=:name ORDER BY gelezen ASC, datum DESC");
+    $sth->bindParam(":name", $naam);
     $sth->execute();
     
     $res = $sth->fetchAll(PDO::FETCH_ASSOC);
-    print_r($res);    
 } elseif(isset($_POST['search'])) {
-    // zoek
-} else {
-    $sth = $dbh->prepare("SELECT id,titel,afzender,datum FROM berichten WHERE ontvanger='Beheerder' ORDER BY datum ASC");
+    $search = "%".$_POST['search']."%";
+    
+    $sth = $dbh->prepare("SELECT id,titel,afzender,gelezen,datum,naam FROM berichten JOIN user_data ON afzender=user_id WHERE ontvanger='1' AND titel LIKE :search ORDER BY gelezen ASC, datum DESC");
+    $sth->bindParam(":search", $search);
     $sth->execute();
     
     $res = $sth->fetchAll(PDO::FETCH_ASSOC);
+} else {
+    $sth = $dbh->prepare("SELECT id,titel,afzender,datum,gelezen,naam FROM berichten JOIN user_data ON afzender=user_id WHERE ontvanger='1' ORDER BY gelezen ASC, datum DESC");
+    $sth->execute();
+    
+    $res = $sth->fetchAll(PDO::FETCH_ASSOC);   
 }
 ?>
 
@@ -48,7 +49,7 @@ if(isset($_GET['name'])) {
 <form action="" method="post">
     <input type="button" onclick="window.location = '/admin/berichten/nieuw'" value="Nieuw"/>
     <input type="submit" name="option" value="Verwijderen"/>
-    <br/>
+    <br/><br/>
     <input type="text" name="search" placeholder="Zoeken..."/>
     <br/><br/>
     <?php 
@@ -60,16 +61,18 @@ if(isset($_GET['name'])) {
 			<td class="center"><input type="checkbox" id="checkall" value=""/></td>
 			<th>Titel</th>
 			<th>Afzender</th>
-			<th>Datum verzonden</th>
+			<th class="center">Datum verzonden</th>
+			<th class="center">Gelezen</th>
 		    </tr>
+		<?php foreach($res as $row) { ?>
 		    <tr>
-			<?php foreach($res as $row) { ?>
 			<td class="center"><input type="checkbox" name="id[]" value="<?php echo($row['id']); ?>"/></td>
-			<td><?php echo($row['titel']);?></td>
-			<td><?php echo($row['afzender']);?></td>
-			<td><?php echo(date("d-m-Y H:i:s", strtotime($row['datum']))); ?></td>
-			<?php } ?>
+			<td><a href="/admin/bericht/<?php echo($row['id']);?>"><?php echo($row['titel']);?></a></td>
+			<td><?php echo($row['naam']); ?></td>
+			<td class="center"><?php echo(date("d-m-Y H:i:s", strtotime($row['datum']))); ?></td>
+			<td class="center"><?php echo($row['gelezen'] == 1 ? "Ja" : "Nee"); ?></td>
 		    </tr>
+		<?php } ?>
 		</table>
 	<?php } ?>
 </form>
