@@ -20,10 +20,11 @@ if(isset($_SESSION['client']) && $_SESSION['client'] == true)
 
 if(isset($_POST['submit']))
 {
+	$errors = array();
 	if(!isset($_POST['login'])) {               // Controleren of beide velden (naam + wachtwoord zijn ingevuld)
-	    print("Geen gebruikersnaam ingevuld!");
+	    $errors[] = 'Geen gebruikersnaam ingevuld!';
 	} else if(!isset($_POST['password'])) {
-	    print("Geen wachtwoord ingevuld!");
+		$errors[] = 'Geen wachtwoord ingevuld!';
 	}
         else {
             $dbh = connectToDatabase(); // Database verbinding wordt aangemaakt en vastgelegd in $dbh
@@ -42,7 +43,7 @@ if(isset($_POST['submit']))
             	header('location:/client/home');
             }
             else {
-            	echo 'Combinatie gebruikersnaam/wachtwoord onjuist.';
+            	$errors[] = 'Combinatie gebruikersnaam/wachtwoord onjuist.';
             }
             //print_r($sth->fetchAll(PDO::FETCH_ASSOC));
 	}
@@ -55,6 +56,13 @@ if(isset($_POST['submit']))
 		<link rel="stylesheet" type="text/css" href="/styles/client.css" />
 	</head>
 	<body>
+		<?php if(isset($errors) && count($errors) > 0):?>
+			<div class="message_error" style="text-align:center;">
+				<?php foreach($errors as $message):?>
+					<p><?php echo $message;?></p>
+				<?php endforeach;?>
+			</div><br />
+		<?php endif;?>
 		<div id="login-form">
 			<form action="<?php echo $_SERVER['PHP_SELF'] ?>" method="post">
 				<table>
