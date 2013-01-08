@@ -381,9 +381,6 @@ table input[type="text"] {
 }
 
 .page {
-    border-color: #768093 transparent;
-    border-style: solid;
-    border-width: 8px;
     text-align: left;
     overflow: auto;
 }
