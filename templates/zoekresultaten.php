@@ -9,18 +9,19 @@ Auteur: Maarten Engels
  * @klas ICT M1 E1
  * @projectGroup SSJ
  */
-//Het woord dat ingevuld wordt in de zoekbalk wordt opgehaald en gebruikt als attribuut voor de SQL-querie.
-if (isset($_POST['zoekwoord123']) && !empty($_POST['zoekwoord123'])) {
+
+//Het woord dat ingevuld wordt in de zoekbalk wordt opgehaald en gebruikt als attribuut voor de SQL-query.
+if(isset($_POST['zoekwoord123']) && !empty($_POST['zoekwoord123'])) {
     $zoekwoord = mysql_real_escape_string($_POST["zoekwoord123"]);
     $_SESSION["zoekresultaat"] = $zoekwoord;
 }
 
-//Als er geen zoekwoord is ingevuld, maar wel op het zoekveld of op de zoekknop is geklikt, geeft hij hier aan dat er geen zoekwoord is ingevuld
-if (empty($zoekwoord)) {
+if(!$_SESSION['zoekresultaat'] && empty($zoekwoord)){ // Kijkt of er al een zoekopdracht aanwezig is en anders of de zoekbalk is ingevuld
     echo "Geen zoekopdracht ingevuld, vul a.u.b. een zoekopdracht in.";
+
 }
 
-//Zelfafhandelend formulier waarbij er naar resultatenpagina 1 gaat als er nog geen paginanummer is opgegeven
+//Zelfafhandelend formulier waarbij er naar resultatenpagina 1 wordt gegaan als er nog geen paginanummer is opgegeven
 if (isset($_GET["page"])) {
     $page = $_GET["page"];
 } else {
@@ -33,9 +34,11 @@ if ($page > 1) {
 $start_from = ($page - 1) * 4;
 
 //Zelfafhandelend formulier waarbij de resultaten 
-if (isset($zoekwoord) && !empty($zoekwoord)) {
+if ((isset($zoekwoord) and !empty($zoekwoord)) or $_SESSION['zoekresultaat']) {
 //Het verbinden met de database wordt in dit stuk tekst gedaan, tevens wordt de SQL-querie hier uitgevoerd voor de resultaten.
 
+    $zoekwoord = $_SESSION['zoekresultaat'] ? $_SESSION['zoekresultaat'] : $zoekwoord; // shortif om te kijken of zoekwoord is ingevuld, anders pakt hij de session
+    
     $dbh = connectToDatabase();
     $sql1 = " SELECT * 
         FROM article 

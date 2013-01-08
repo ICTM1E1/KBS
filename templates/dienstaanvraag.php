@@ -211,7 +211,7 @@ if (isset($_POST['vraagaan']))
 						<?php $half = ($i % 2 != 0)?'30':'00';?>
 						<?php $hour = floor($i / 2);?>
 						<?php $hour = date('H', mktime($hour,0,0, 1, 1, 1970));?>
-						<option <?php echo ($hour . ':' . $half == $start_time) ? 'selected="selected"':'';?> value="<?php echo $hour . ':' . $half; ?>"><?php echo $hour . ':' . $half; ?></option>
+						<option <?php echo isset($start_time) && ($hour . ':' . $half == $start_time) ? 'selected="selected"':'';?> value="<?php echo $hour . ':' . $half; ?>"><?php echo $hour . ':' . $half; ?></option>
 					<?php endfor;?>
 				</select>
 				<select name="end_time">
@@ -219,7 +219,7 @@ if (isset($_POST['vraagaan']))
 						<?php $half = ($i % 2 != 0)?'30':'00';?>
 						<?php $hour = floor($i / 2);?>
 						<?php $hour = date('H', mktime($hour,0,0, 1, 1, 1970));?>
-						<option <?php echo ($hour . ':' . $half == $end_time) ? 'selected="selected"':'';?> value="<?php echo $hour . ':' . $half; ?>"><?php echo $hour . ':' . $half; ?></option>
+						<option <?php echo isset($end_time) && ($hour . ':' . $half == $end_time) ? 'selected="selected"':'';?> value="<?php echo $hour . ':' . $half; ?>"><?php echo $hour . ':' . $half; ?></option>
 					<?php endfor;?>
 				</select>
 			</td>
