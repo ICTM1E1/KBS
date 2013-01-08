@@ -9,6 +9,7 @@ Auteur: Maarten Engels
  * @klas ICT M1 E1
  * @projectGroup SSJ
  */
+
 //Het woord dat ingevuld wordt in de zoekbalk wordt opgehaald en gebruikt als attribuut voor de SQL-query.
 if(isset($_POST['zoekwoord123']) && !empty($_POST['zoekwoord123'])) {
     $zoekwoord = mysql_real_escape_string($_POST["zoekwoord123"]);
@@ -16,12 +17,11 @@ if(isset($_POST['zoekwoord123']) && !empty($_POST['zoekwoord123'])) {
 }
 
 if(!$_SESSION['zoekresultaat'] && empty($zoekwoord)){ // Kijkt of er al een zoekopdracht aanwezig is en anders of de zoekbalk is ingevuld
-    echo "Geen zoekopdracht ingevuld, vul a.u.b. een zoekopdracht in";
+    echo "Geen zoekopdracht ingevuld, vul a.u.b. een zoekopdracht in.";
+
 }
 
-
-
-//Zelfafhandelend formulier waarbij er naar resultatenpagina 1 gaat als er nog geen paginanummer is opgegeven
+//Zelfafhandelend formulier waarbij er naar resultatenpagina 1 wordt gegaan als er nog geen paginanummer is opgegeven
 if (isset($_GET["page"])) {
     $page = $_GET["page"];
 } else {
