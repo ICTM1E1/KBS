@@ -28,6 +28,32 @@ $result = selectquery($sql, $dbh);
     <hr>
 </div>
 <!--Table-->
+<div class="page">
+    <div class="pagination">
+	<?php
+//sql statement
+	$sql2 = "SELECT * FROM services";
+	$result2 = selectquery($sql2, $dbh);
+//calculate total records
+	$total_records = count($result2);
+//calculate pages by dividing total records by 20
+	$total_pages = ceil($total_records / 20);
+//check if page total is larger than 1, if it is larger, pages will be put in.
+	if ($total_pages > 1) {
+	    //$i stands for the page number and starts at one
+	    for ($i = 1; $i <= $total_pages; $i++) {
+		// zorgt ervoor dat de paginanummer van de pagina waar hij nu op zit niet wordt weergegeven
+		if ($i != $page) {
+		    //$i (page number) implemented in link below table
+		    echo "<a href='/tarieven/" . $i . "'>" . $i . "</a> ";
+		}
+	    }
+	}
+	?>
+    </div>
+    <!-- geeft weer op welke pagina je zit -->
+    <p> <strong> Pagina: <?php echo $i = $page ?> </strong> </p>
+</div>
 <table>
     <!--Tablehead-->
     <thead>
@@ -54,23 +80,3 @@ $result = selectquery($sql, $dbh);
 	<?php } ?>
     </tbody>
 </table>
-<?php
-//sql statement
-$sql2 = "SELECT * FROM services";
-$result2 = selectquery($sql2, $dbh);
-//calculate total records
-$total_records = count($result2);
-//calculate pages by dividing total records by 20
-$total_pages = ceil($total_records / 20);
-//check if page total is larger than 1, if it is larger, pages will be put in.
-if ($total_pages > 1) {
-    //$i stands for the page number and starts at one
-    for ($i = 1; $i <= $total_pages; $i++) {
-	// zorgt ervoor dat de paginanummer van de pagina waar hij nu op zit niet wordt weergegeven
-	if ($i != $page) {
-	    //$i (page number) implemented in link below table
-	    echo "<a href='/tarieven/" . $i . "'>" . $i . "</a> ";
-	}
-    }
-}
-?>

@@ -52,6 +52,7 @@ a:hover {
 table {
     width: 100%;
     border: 1px solid #7a8bac;
+    margin-bottom: 2px;
 }
 
 table tr th {
