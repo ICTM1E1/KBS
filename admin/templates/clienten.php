@@ -9,14 +9,30 @@ $dbh = connectToDatabase();
 
 if(isset($_POST['search']) && !empty($_POST['search'])) {
   $search = "%".$_POST['search']."%";
-  $sth = $dbh->prepare("SELECT ID,username,name,email FROM clients WHERE username LIKE :search OR email LIKE :search");
+  $query = "
+	SELECT `users`.`id`, `users`.`username`, `user_data`.`naam`, `user_data`.`email` 
+	FROM `users` 
+	LEFT JOIN `user_data` 
+		ON `users`.`id` = `user_data`.`user_id` 
+	WHERE `users`.`admin` = 0
+	AND `users`.`username` LIKE :search OR `user_data`.`email` LIKE :search
+  ";
+  $sth = $dbh->prepare($query);
   $sth->bindParam(":search", $search);
   $sth->execute();
   
   $res = $sth->fetchAll(PDO::FETCH_ASSOC);
   
 } else {
-    $sth = $dbh->query("SELECT ID,username,name,email FROM clients LIMIT 0,30");
+	$query = "
+		SELECT `users`.`id`, `users`.`username`, `user_data`.`naam`, `user_data`.`email` 
+		FROM `users` 
+		LEFT JOIN `user_data` 
+			ON `users`.`id` = `user_data`.`user_id` 
+		WHERE `users`.`admin` = 0
+		LIMIT 0,30
+	";
+    $sth = $dbh->query($query);
     $sth->execute();
 
     $res = $sth->fetchAll(PDO::FETCH_ASSOC);

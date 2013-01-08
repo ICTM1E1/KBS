@@ -85,6 +85,14 @@ table.simple-table tr:nth-child(even) {
     background: transparent;
 }
 
+.hidden {
+	display: none;
+}
+
+.clear {
+	clear: both;
+}
+
 #login-form {
     width: 150px;
     height: 130px;
@@ -108,6 +116,7 @@ table.simple-table tr:nth-child(even) {
 }
 
 #wrapper {
+    min-width: 1080px;
     width: 100%;
     position: relative;
 }
@@ -277,12 +286,42 @@ table.simple-table tr:nth-child(even) {
 .agenda .ag-day-row {
     clear:both;
     padding: 2px 9px;
+	cursor: pointer;
 }
 
-.agenda .ag-day-appointment {
+.agenda .ag-day-appointment,
+.agenda .ag-bubble-all-appointments-row {
     background-color: #CAD6EC;
     border: 1px solid #768093;
     margin: 0 2px 2px;
+	height: 16px;
+	overflow: auto;
+}
+
+.agenda .ag-day-requested-appointment,
+.agenda .ag-bubble-all-appointments-requested {
+	background-color: #cbecca;
+    border: 1px solid #768093;
+    margin: 0 2px 2px;
+}
+
+.agenda .appointment-status-goedgekeurd,
+.agenda .ag-bubble-appointments-reuested-status-goedgekeurd {
+	background-color: #cbecca;
+}
+
+.agenda .appointment-status-aangevraagd,
+.agenda .ag-bubble-appointments-reuested-status-aangevraagd {
+	background-color: #f7c98c;
+}
+
+.agenda .appointment-status-afgekeurd,
+.agenda .ag-bubble-appointments-reuested-status-afgekeurd {
+	background-color: #eccaca;
+}
+
+.agenda .ag-bubble-all-date {
+	font-weight: bold;
 }
 
 .agenda .ag-non-month .ag-day-appointment {
@@ -291,7 +330,7 @@ table.simple-table tr:nth-child(even) {
 }
 
 .bewerkagendapunt table {
-    width: 600px;
+    width: 400px;
 }
 
 .bewerkagendapunt table #start-time,
@@ -304,7 +343,8 @@ table.simple-table tr:nth-child(even) {
     width: 80px;
 }
 
-.bewerkagendapunt #start-time-list {
+.bewerkagendapunt #start-time-list,
+.bewerkagendapunt #end-time-list {
     border: 1px solid #95a1b8;
     height: 112px;
     overflow: auto;
@@ -315,22 +355,52 @@ table.simple-table tr:nth-child(even) {
     position: absolute;
 }
 
-.bewerkagendapunt #start-time-list div {
+.bewerkagendapunt #start-time-list div,
+.bewerkagendapunt #end-time-list div {
     cursor: pointer;
 }
 
-.bewerkagendapunt #start-time-list div:hover {
+.bewerkagendapunt #start-time-list div:hover,
+.bewerkagendapunt #end-time-list div:hover {
     background-color: #CAD6EC;
 }
 
+.bewerkagendapunt input,
+.bewerkagendapunt textarea,
+.bewerkagendapunt select,
+.bewerkagendapunt option {
+	padding: 5px;
+}
+
+.bewerkagendapunt input.title {
+	font-size: 16px;
+	font-weight: bold;
+	width: 100%;
+}
+
+.bewerkagendapunt textarea,
+.bewerkagendapunt input.location,
+.bewerkagendapunt select {
+	width: 100%;
+}
+
+.bewerkagendapunt select {
+	height: 28px;
+}
+
 #bubble-main,
-#bubble-edit-appointment {
+#bubble-edit-appointment,
+#bubble-all-appointments {
     display: none;
     width: 350px;
     height: 150px;
     position: absolute;
     background-color: #fff;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+#bubble-edit-appointment {
+	z-index: 1000;
 }
 
 .bubble-content {
@@ -341,8 +411,8 @@ table.simple-table tr:nth-child(even) {
 
 .bubble-content .appointment-options {
     border-top: 1px solid #7A8BAC;
-    bottom: 10px;
-    padding-top: 10px;
+    bottom: 6px;
+    padding-top: 6px;
     position: absolute;
     width: 310px;
 }
@@ -351,12 +421,25 @@ table.simple-table tr:nth-child(even) {
     background-color: #fff;
 }
 
+.bubble-close {
+	cursor: pointer;
+    font-weight: bold;
+    position: absolute;
+    right: 10px;
+    top: 10px;
+}
+
 .right {
     float: right;
 }
 
 .left {
     float: left;
+}
+
+.ag-day-appointment-more {
+	color: #1556d1;
+	cursor: pointer;
 }
 
 .bottom-prong {
@@ -405,6 +488,21 @@ table.simple-table tr:nth-child(even) {
     left: 1px;
 }
 
+#bubble-all-appointments {
+    display: none;
+    width: 350px;
+    height: auto;
+    position: absolute;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+#bubble-all-appointments .bubble-content {
+    padding: 20px;
+    height: auto;
+    width: 310px;
+}
+
 .pagination {
     text-align: right;
     height: 1px;
@@ -418,6 +516,7 @@ table.simple-table tr:nth-child(even) {
     text-align: left;
     overflow: auto;
 }
+
 /*! jQuery UI - v1.9.2 - 2012-12-04
 * http://jqueryui.com
 * Includes: jquery.ui.core.css, jquery.ui.resizable.css, jquery.ui.selectable.css, jquery.ui.accordion.css, jquery.ui.autocomplete.css, jquery.ui.button.css, jquery.ui.datepicker.css, jquery.ui.dialog.css, jquery.ui.menu.css, jquery.ui.progressbar.css, jquery.ui.slider.css, jquery.ui.spinner.css, jquery.ui.tabs.css, jquery.ui.tooltip.css

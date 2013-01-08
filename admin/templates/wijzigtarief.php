@@ -14,6 +14,10 @@ if (isset($_POST['Verander!'])) {
 	$ident = $_POST['id'];
 	$priceph = $_POST['pph'];
 	$average = $_POST['avgcost'];
+	if(is_numeric($priceph)==false or is_numeric($average)==false){
+	    echo '<div class="message_error"><p>U moet cijfers voor de prijzen gebruiken</p></div>';
+	}
+	elseif(($average>=0) and ($priceph>=0)){
 	//updating the database
 	//sql statement
 	$sql = (" UPDATE services SET pph=$priceph, avgcost=$average WHERE service_id=$ident ");
@@ -22,7 +26,9 @@ if (isset($_POST['Verander!'])) {
 	$sth->execute();
 	header('Location:/admin/admintarieven');
     }
-} else {
+    else{echo '<div class="message_error"><p>U moet uw prijzen op 0 of hoger hebben</p></div>';}
+    }
+}
 
     //retrieving rates from service
     //retrieving ID
@@ -35,19 +41,18 @@ if (isset($_POST['Verander!'])) {
     //retrieving resulted data
     $row = $sth->fetch(PDO::FETCH_ASSOC);
     ?>
-<!--Form for input of price per hour and average price-->
+    <!--Form for input of price per hour and average price-->
     <form action="" method="POST">
         <input type="hidden" name="id" value="<?php echo($id); ?>">
-        <table class="simple-table">
-    	<tr>
-    	    <td>Prijs per uur:<input type="text" name="pph" value="<?php echo($row['pph']) ?>" /></td>
-    	</tr>
-    	<tr>
-    	    <td>Gemiddelde prijs:<input type="text" name="avgcost" value="<?php echo($row['avgcost']) ?>" /></td>
-    	</tr>                    
-    	<tr>                        
-    	    <td><input type="submit" value="Verander!" name="Verander!" /></td>
-    	</tr>
-        </table>
+
+        <label>Prijs per uur:</label>
+        <br>
+        <input type="text" name="pph" value="<?php echo($row['pph']) ?>" />
+        <br/><br/>
+        <label>Gemiddelde prijs:</label>
+        <br>    
+        <input type="text" name="avgcost" value="<?php echo($row['avgcost']) ?>" />
+        <br/><br/>
+        <input type="submit" value="Verander!" name="Verander!" />
+
     </form>
-<?php } ?>

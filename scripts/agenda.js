@@ -2,6 +2,7 @@ $(document).ready(function()
 {
 	$('#next_month').click(function(e)
 	{
+		$('#bubble-all-appointments').hide();
 		hideBubble();
 		
 		e.preventDefault();
@@ -31,6 +32,7 @@ $(document).ready(function()
 	
 	$('#previous_month').click(function(e)
 	{
+		$('#bubble-all-appointments').hide();
 		hideBubble();
 		
 		e.preventDefault();
@@ -60,6 +62,7 @@ $(document).ready(function()
 	
 	$('.ag-day').live('click', function(e)
 	{
+		$('#bubble-all-appointments').hide();
 		if($(this).hasClass('active'))
 		{
 			hideBubble();
@@ -75,12 +78,11 @@ $(document).ready(function()
 			var current_day = clicked_block.children('.ag-date-day').val();
 			var selected_date = current_year + '-' + current_month + '-' + current_day;
 			var display_date = clicked_block.children('.ag-date-display').val();
-			clicked_block.css('background-color', '#FFF6F6');
 			
 			$('#bubble-main #selected-date-value').val(selected_date);
 			$('#bubble-main #selected-date').html(display_date);
 			
-			showBubble('#bubble-main', clicked_block, parent, false);
+			showBubble('#bubble-main', clicked_block, parent);
 			$('#bubble-what').focus();
 		}
 	});
@@ -109,6 +111,7 @@ $(document).ready(function()
 	function refreshMonth()
 	{
 		hideBubble();
+		$('#bubble-all-appointments').hide();
 		
 		var year = parseInt($('#current_year').val());
 		var month = parseInt($('#current_month').val());
@@ -127,21 +130,36 @@ $(document).ready(function()
 		$('.active').each(function(){
 			$(this).removeClass('active');
 			$(this).css('background-color', '');
+			
+			$('.ag-day').each(function(){
+				$(this).css('background-color', '');
+			});
 		});
-		
-		
 
 		$('#bubble-main').hide();
 		$('#bubble-what').val('');
 		
 		$('#bubble-edit-appointment').hide();
+		//$('#bubble-all-appointments').hide();
 	}
 	
-	function showBubble(id, clicked_block, parent, appointment)
+	function showBubble(id, clicked_block, parent, appointment, clicked_row, bubble_appointment, appointment_more)
 	{
 		hideBubble();
-
 		
+		if(appointment == undefined) {
+			appointment = false;
+		}
+		if(clicked_row == undefined) {
+			clicked_row = false;
+		}
+		if(bubble_appointment == undefined) {
+			bubble_appointment = false;
+		}
+		if(appointment_more == undefined) {
+			appointment_more = false;
+		}
+
 		var top = parent.position().top - 35;
 		var left = clicked_block.position().left - 30;
 		var window_width = $(window).width();
@@ -158,14 +176,56 @@ $(document).ready(function()
 			left -= (new_left + 20);
 		}
 		
+		if(clicked_block.hasClass('ag-appointments')) {
+			clicked_block.parent('.ag-day').css('background-color', '#FFF6F6');
+		}
+		else if(clicked_block.hasClass('ag-appointments')) {
+			clicked_block.css('background-color', '#FFF6F6');
+		}
+		else if(clicked_block.hasClass('ag-day')){
+			clicked_block.css('background-color', '#FFF6F6');
+		}
+		
 		if(appointment)
 		{
+			var counter = 0;
+			var row_number = 0;
 			top -= 15;
-			clicked_block.children('.ag-day-appointment').addClass('active');
+			clicked_row.addClass('active');
+			clicked_block.children('.ag-day-appointment').each(function(){
+				if($(this).hasClass('active'))
+				{
+					row_number = counter;
+				}
+				counter++;
+			});
+
+			top += (24 * row_number);
+		}
+		else if(bubble_appointment)
+		{
+			var counter = 1;
+			var row_number = 0;
+			top = (clicked_row.parents('#bubble-all-appointments').position().top - 150);
+
+			clicked_row.addClass('active');
+			parent.find('.ag-bubble-all-appointments-row').each(function(){
+				if($(this).hasClass('active'))
+				{
+					row_number = counter;
+				}
+				counter++;
+			});
+
+			top += (25 * row_number);
+		}
+		else if(appointment_more) {
+			clicked_block.children('.ag-day-appointment-more').addClass('active');
 		}
 		else {
 			clicked_block.addClass('active');
 		}
+		
 		
 		$(id).show();
 		$(id).css({
@@ -177,6 +237,7 @@ $(document).ready(function()
 	$('.ag-day-appointment').live('click', function(e)
 	{
 		e.stopPropagation();
+		$('#bubble-all-appointments').hide();
 		if($(this).hasClass('active'))
 		{
 			hideBubble();
@@ -185,13 +246,89 @@ $(document).ready(function()
 			hideBubble();
 			var clicked_block = $(this).parent();
 			var parent = $(this).parents('.ag-month-row');
-			var date = clicked_block.children('.ag-date-display').val();
+			var date = clicked_block.nextAll('.ag-date-display').val();
+			
+			start = $(this).children('.ag-appointment-start').val();
+			end = $(this).children('.ag-appointment-end').val();
+			time = start + ' - ' + end;
+			
+			if(start == '' && end == ''){
+				time = '';
+			}
+
+			$('#appointment-requested').val('');
+			if($(this).hasClass('ag-day-requested-appointment')){
+				$('#appointment-requested').val(true);
+			}
+			
+			$('#appointment-date').html(date);
+			$('#appointment-name').html($(this).children('.ag-appointment-name').val());
+			$('#appointment-location').html($(this).children('.ag-appointment-location').val());
+			$('#appointment-time').html(time);
+			$('#appointment-id').val($(this).children('.ag-appointment-id').val());
+			
+			showBubble('#bubble-edit-appointment', clicked_block, parent, true, $(this));
+		}
+	});
+	
+	$('.ag-day-appointment-more').live('click', function(e)
+	{
+		$('#bubble-all-appointments').hide();
+		e.stopPropagation();
+		
+		if($(this).hasClass('active'))
+		{
+			hideBubble();
+		}
+		else {
+			hideBubble();
+			
+			var clicked_block = $(this).parent();
+			var parent = $(this).parents('.ag-month-row');
+			var appointments = clicked_block.children('.ag-day-appointment');
+			var date = clicked_block.nextAll('.ag-date-display').val();
+			
+			
+			var appointments_html = '<div class="ag-bubble-all-date">' + date + '</div>';
+			appointments.each(function(){
+				if($(this).hasClass(('ag-day-requested-appointment')))
+				{
+					var status = $(this).children('.ag-appointment-status').val();
+					appointments_html += '<div class="ag-bubble-all-appointments-row ag-day-row ag-bubble-all-appointments-requested ag-bubble-appointments-reuested-status-' + status + '">';
+					appointments_html += $(this).html();
+					appointments_html += '</div>';
+				}
+				else {
+					appointments_html += '<div class="ag-bubble-all-appointments-row ag-day-row">';
+					appointments_html += $(this).html();
+					appointments_html += '</div>';
+				}
+			});
+			
+			$('#bubble-all-appointments .bubble-content').html(appointments_html);
+			
+			showBubble('#bubble-all-appointments', clicked_block, parent, false, false, false, true);
+		}
+	});
+	
+	$('.ag-bubble-all-appointments-row').live('click', function(e)
+	{
+		e.stopPropagation();
+		if($(this).hasClass('active'))
+		{
+			hideBubble(false);
+		}
+		else {
+			hideBubble(false);
+			var clicked_block = $(this).parents('#bubble-all-appointments');
+			var parent = $(this).parents('#bubble-all-appointments');
+			var date = $(this).prevAll('.ag-bubble-all-date').html();
 			
 			$('#appointment-date').html(date);
 			$('#appointment-name').html($(this).children('.ag-appointment-name').val());
 			$('#appointment-id').val($(this).children('.ag-appointment-id').val());
 			
-			showBubble('#bubble-edit-appointment', clicked_block, parent, true);
+			showBubble('#bubble-edit-appointment', clicked_block, parent, false, $(this), true);
 		}
 	});
 	
@@ -210,10 +347,25 @@ $(document).ready(function()
 	});
 	
 	$('#edit-existing-appointment').live('click', function(){
+		
 		var id = $('#appointment-id').val();
-		window.location.href = '/admin/agenda/bewerk/' + id;
+		var href = '/admin/agenda/bewerk/' + id;
+		
+		if($('#appointment-requested').val() != ''){
+			href += '/requested'
+		}
+		
+		window.location.href = href;
 	});
 	
+	$('.bubble-close').click(function(){
+		$(this).parents('[id^=bubble-]').hide();
+		hideBubble();
+	});
+	
+	/*
+	 * Datepicker
+	 */
 	$('#end-date').datepicker({ 
 		dateFormat: "dd-mm-yy",
 		onSelect: function(dateText, inst) 
@@ -254,13 +406,12 @@ $(document).ready(function()
 				$('#end-date').datepicker('setDate', dateText);
 			}
 		}
-	})
-	
+	});	
 	
 	$('#start-time').click(function(){
 		var position = $(this).position();
-		var top = position.top + 17;
-		var left = position.left;
+		var top = position.top + 26;
+		var left = position.left - 1;
 		
 		$('#start-time-list').css({
 			'top' : top,
@@ -274,6 +425,32 @@ $(document).ready(function()
 		if ($("#start-time-list div").has(":focus").length == 0) 
 		{
 			$('#start-time-list').css('display', 'none');
+		}
+		
+	});
+	
+	$('#end-time-list div').mousedown(function(e)
+	{
+		$('#end-time').val($(this).html());
+	});
+	
+	$('#end-time').click(function(){
+		var position = $(this).position();
+		var top = position.top + 26;
+		var left = position.left - 1;
+		
+		$('#end-time-list').css({
+			'top' : top,
+			'left' : left,
+			'display' : 'block'
+		});
+	});
+	
+	$('#end-time').blur(function()
+	{
+		if ($("#end-time-list div").has(":focus").length == 0) 
+		{
+			$('#end-time-list').css('display', 'none');
 		}
 		
 	});

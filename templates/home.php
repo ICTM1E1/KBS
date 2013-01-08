@@ -8,7 +8,6 @@ $dbh=  connectToDatabase();
 ?>
 <div>
     <div id="home-upper">
-	<div id="home-about">
 	    Lage soms deel stad ad vast nu erin. Zij wie met vermijden nutteloos tinmijnen.
 	    Kan wegen wilde drong reden dal naast tin van. Stampers roestige pyrieten ad te. 
 	    Beroemde eveneens te laatsten contract te. Ten gronds weldra gevolg die passen steeds zonder. 
@@ -17,16 +16,7 @@ $dbh=  connectToDatabase();
 	    Wordt of ad begin varen en. Deel is ik alle te geen. Nu wijk zout te ze is acre.
 	    Andere ceylon om te kriang lieden. Monopolie bezwarend stroomend gesteente na of de afstanden overwaard nu.
 	    Ongunstige schoonheid karrijders af nu europeanen geruineerd weelderige. Is heuvel ruimer slotte er om.
-	</div>
-	<div id="home-links">
-	    <ul>
-		<li><a>facebook</a></li>
-		<li><a>twitter</a></li>
-		<li><a>linkedin</a></li>
-		<li><a>nogiets</a></li>
-		<li><a>nog eens nog iets</a></li>
-	    </ul>
-	</div>
+
     </div>
     
     <div id="home-news">
