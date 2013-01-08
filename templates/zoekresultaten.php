@@ -14,6 +14,13 @@ if(isset($_POST['zoekwoord123']) && !empty($_POST['zoekwoord123'])) {
     $zoekwoord = mysql_real_escape_string($_POST["zoekwoord123"]);
     $_SESSION["zoekresultaat"] = $zoekwoord;
 }
+
+if($zoekwoord == ""){
+    echo "Geen zoekopdracht ingevuld, vul a.u.b. een zoekopdracht in";
+}
+
+
+
 //Zelfafhandelend formulier waarbij er naar resultatenpagina 1 gaat als er nog geen paginanummer is opgegeven
 if (isset($_GET["page"])) {
     $page = $_GET["page"];
