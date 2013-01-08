@@ -167,7 +167,8 @@ if(isset($_POST['save-agenda-point']))
 					Beste ' . $user_data['naam'] . ', <br /><br />
 					De beheerder heeft een wijziging gemaakt in uw aanvraag:<br />
 					' . $wijzigingen . '
-					' . $change_data . '<br />
+					' . $change_data . '<br /><br />
+					Met de volgende reden: ' . $_POST['reason'] . '<br /><br />
 					Met vriendelijke groet,<br />
 					' . WEBSITE_NAAM . '
 				';
