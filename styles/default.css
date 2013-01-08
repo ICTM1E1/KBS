@@ -331,6 +331,7 @@ table input[type="text"] {
 
 #archivemonth{
     margin-left: 5px;
+    margin-bottom: 2px;
     list-style: none;
     padding: 5px;
     border: #7a8bac thin solid;
