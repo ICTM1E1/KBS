@@ -21,6 +21,11 @@ a {
     text-decoration: none;
 }
 
+input[type="submit"],
+input[type="button"] {
+	cursor: pointer;
+}
+
 input[type="text"],
 input[type="password"],
 textarea {
@@ -510,9 +515,6 @@ table.simple-table tr:nth-child(even) {
 }
 
 .page {
-    border-color: #FFFFFF transparent;
-    border-style: solid;
-    border-width: 8px;
     text-align: left;
     overflow: auto;
 }

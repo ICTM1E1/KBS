@@ -669,5 +669,4 @@ function validEmail($email, $skipDNS = false)
     return $password;
 
   }
-
 ?>
