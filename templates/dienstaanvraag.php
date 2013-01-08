@@ -78,10 +78,15 @@ if (isset($_POST['vraagaan']))
     {
     	$errors[] = 'U moet een geldig telefoon nummer opgeven.';
     }
+    $explode_date = explode('-', $date);
     if($date == '')
     {
     	$errors[] = 'U moet een datum opgeven.';
-    }    
+    }
+    else if(count($explode_date) != 3)
+    {
+    	$errors[] = 'U moet een geldige datum opgeven';
+    } 
     if($start_time == '')
     {
     	$errors[] = 'U moet een start tijd opgeven.';

@@ -279,7 +279,11 @@ function getAgendaMonth($month = false, $year = false)
 				if($row['start_datum'] == $date)
 				{
 					$cal[$week][$day]['appointments'][] = $row;
-					unset($appointments[$key]);
+				}
+				else if(strtotime($row['start_datum']) < strtotime($date) && strtotime($date) <= strtotime($row['eind_datum']) && $row['eind_datum'] != '0000-00-00')
+				{
+					
+					$cal[$week][$day]['appointments'][] = $row;
 				}
 			}
 			
