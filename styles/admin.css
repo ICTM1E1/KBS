@@ -237,6 +237,7 @@ table.simple-table tr:nth-child(even) {
     position: absolute;
     top: 25px;
     width: 100%;
+	height: 730px;
 }
 
 .agenda table.ag-grid {
