@@ -22,7 +22,7 @@ if (isset($_POST["verstuur"])){
     $message .= 'Onderwerp: '.$onderwerp;
     $message .= 'Vraag: <br>'.$vraag;
 
-    //$headers = 'From: '.$email."\r\n";
+    //Hier de info over vanwaar de e-mail komt
     $headers = 'From: ' .EMAIL_KLANT. '\r\n';
     $headers .= 'Reply-To: '.$email."\r\n";
     
