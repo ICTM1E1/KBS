@@ -70,6 +70,10 @@ if(isset($_POST['save-agenda-point']))
 	{
 		$errors[] = 'U moet een geldige start datum opgeven';
 	}
+	else if(strlen($explode_start_date[0]) == 4)
+	{
+		$errors[] = 'U moet een geldige start datum opgeven';
+	}
 	
 	
 	if($start_date == '')
