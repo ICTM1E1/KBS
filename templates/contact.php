@@ -41,7 +41,7 @@ if (isset($_POST["verstuur"])) {
     } else {
 	echo '<div class="message_success"><p>Geslaagd, de mail is verstuurd</p></div>';
     }
-
+}
 
 /*
  * @author Caspar Crop
@@ -136,4 +136,4 @@ if (isset($_POST["verstuur"])) {
 		</tr>
 	    </table>
 	</form>
-    <?php } }?>
+    <?php } ?>
