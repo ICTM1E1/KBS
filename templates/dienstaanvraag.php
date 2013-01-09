@@ -8,10 +8,15 @@
 $dbh = connectToDatabase();
 $_SESSION['service_id'] = $_GET['id'];
 
+//sql statement for retreiving the service data associated with the selected service
 $selectsql="SELECT servicename, pph, avgcost FROM services where service_id=:id";
+// preparing the sql query
 $sth=$dbh->prepare($selectsql);
+//binding the ID variable
 $sth->bindParam(":id", $_SESSION['service_id']);
+//executing the query
 $sth->execute();
+//retreiving the data from the query
 $result= $sth->fetch(PDO::FETCH_ASSOC);
 
 $dienst=$result['servicename'];
@@ -213,14 +218,20 @@ if (isset($_POST['vraagaan']))
 	</div><br />
 <?php endif;?>
 <?php if(!isset($_GET['status'])):
+    
 //if the user is logged in, the following is done
 if(isset($_SESSION['clientid'])){
+    //sql statement for retreiving the user's data
     $userinfosql = "SELECT * 
 		    FROM user_data
 		    WHERE user_id =:id";
+    //preparing the sql query
     $sth = $dbh->prepare($userinfosql);
+    //binding the ID variable
     $sth->bindParam(":id", $_SESSION['clientid']);
+    //executing the query
     $sth->execute();
+    //retreiving the data from the query
     $res = $sth->fetch(PDO::FETCH_ASSOC);
       
     ?>
