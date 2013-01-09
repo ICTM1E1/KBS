@@ -25,7 +25,7 @@ if(isset($_POST['submit'])) {
     $ontv = $_POST['ontvanger'];
     $bericht = $_POST['bericht'];
     
-    if(empty($titel)) {
+    if(empty($titel)) {  // Kijk of er velden missen
 	$style = "message_error";
 	$statusText = "Titel mag niet leeg zijn!";
     } elseif(empty($ontv)) {
@@ -36,9 +36,9 @@ if(isset($_POST['submit'])) {
 	$statusText = "Bericht mag niet leeg zijn!";
     } else {
 	$dbh = connectToDatabase();
-	$datum = date("Y-m-d H:i:s", time());
+	$datum = date("Y-m-d H:i:s", time()); // SQL-compatibele tijd/datum notatie
 	
-	$sth = $dbh->prepare("SELECT id FROM users WHERE username=:ontv");
+	$sth = $dbh->prepare("SELECT id,email,naam FROM users JOIN user_data ON user_id = id WHERE username=:ontv"); // Haal de user ID op voor opslaan.
 	$sth->bindParam(":ontv", $ontv);
 	$sth->execute();
 	$res = $sth->fetchAll(PDO::FETCH_ASSOC);
@@ -46,29 +46,57 @@ if(isset($_POST['submit'])) {
 	if(empty($res)) {
 	    $style = "message_error";
 	    $statusText = "Ontvanger is niet geldig!";
-	}
+		
+	} else{
 	
+	$email = $res[0]['email'];
+	$naam = $res[0]['naam'];
 	$ontv = $res[0]['id'];
 	
+	// Voeg een bericht toe aan de database
 	$sth = $dbh->prepare("INSERT INTO berichten (titel, afzender, ontvanger, bericht, datum) VALUES (:titel, '1', :ontv, :bericht, :datum)");
-	$sth->bindParam(":titel", $titel);
+	$sth->bindParam(":titel", $titel); 
 	$sth->bindParam(":ontv", $ontv);
 	$sth->bindParam(":bericht", $bericht);
 	$sth->bindParam(":datum", $datum);
 	$won = $sth->execute();
 	
-	if($won) {
+	if($won) { // Kijkt of de query is gelukt
+	   	$to  = $email;
+		$subject = 'Bericht ontvangen - ' . $titel;
+			
+		// message
+		$message = '
+			Beste ' . $naam . ', <br /><br />
+			U heeft een bericht ontvangen!<br />
+			U kunt deze bekijken op '.SERVERPATH.'<br /><br />
+			Met vriendelijke groet,<br />
+			' . WEBSITE_NAAM . '
+		';
+			
+		// To send HTML mail, the Content-type header must be set
+		$headers  = 'MIME-Version: 1.0' . "\r\n";
+		$headers .= 'Content-type: text/html; charset=utf-8' . "\r\n";
+			
+		// Additional headers
+		$headers .= 'To: ' . $naam . ' <' . $email . '>' . "\r\n";
+		$headers .= 'From: ' . WEBSITE_NAAM . ' <' . EMAIL_AFZENDER . '>' . "\r\n";
+			
+		// Mail it
+		mail($to, $subject, $message, $headers);
+	
 	    header("Location: /admin/berichten/succes");
-	} else{
+	} else{ // Anders slaat het systeem de gegevens op en laat een foutmelding zien.
 	    $_SESSION['msg_titel'] = $titel;
 	    $_SESSION['msg_ontv'] = $ontv;
 	    $_SESSION['msg_bericht'] = $bericht;
 	    header("Location: /admin/berichten/faal");
 	}
     }
+	}
 }
 
-if(isset($_GET['naam'])) {
+if(isset($_GET['naam'])) { // Laadt de naam als deze geset is
     $naam = $_GET['naam'];
 } else {
     $naam = "";

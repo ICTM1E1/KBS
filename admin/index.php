@@ -25,6 +25,19 @@ if(!file_exists(DOCROOT . 'admin/templates/' . $page . '.php'))
 {
 	$page = 'home';
 }
+
+$unread = "";
+
+$dbh = connectToDatabase();
+
+$sth = $dbh->prepare("SELECT id FROM berichten WHERE ontvanger='1' AND gelezen='0'");
+$sth->execute();
+$count = $sth->rowCount();
+
+if($count > 0) {
+	$unread = " (".$count.")";
+}
+
 ?>
 <html>
 	<head>
@@ -51,7 +64,7 @@ if(!file_exists(DOCROOT . 'admin/templates/' . $page . '.php'))
 						<li><a href="/admin/diensten">Diensten</a></li>
 						<li><a href="/admin/downloads">Downloads</a></li>
 						<li><a href="/admin/clienten">Cli&euml;nten</a></li>
-						<li><a href="/admin/berichten">Berichten</a></li> <!-- todo: voeg ongelezen teller toe-->
+						<li><a href="/admin/berichten">Berichten<?php echo($unread);?></a></li>
 						<li><a href="/admin/menu">Menu Items</a></li>
 						<li class="login_menu_item">
 							<a href="/admin/logout">Uitloggen</a>

@@ -55,11 +55,6 @@ if(isset($_POST['submit'])) {
 	}
     }
 }
-
-if(isset($_GET['naam']) || empty($naam)) {
-    $naam = $_GET['naam'];
-}
-
 ?>
 
 <div class="<?php echo $style; ?>">

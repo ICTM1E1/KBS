@@ -5,31 +5,31 @@
  * @projectGroup SSJ
  */
 
-if(isset($_GET['id'])) {
+if(isset($_GET['id'])) { // Als de ID is geset, haal het bericht op
     $id = $_GET['id'];
     $cid = $_SESSION['clientid'];
     $dbh = connectToDatabase();
     
-    $sth = $dbh->prepare("SELECT * FROM berichten WHERE id=:id AND ontvanger=:cid");
+    $sth = $dbh->prepare("SELECT * FROM berichten WHERE id=:id AND ontvanger=:cid"); // controle of het bericht wel naar de client is gestuurd
     $sth->bindParam(":id", $id);
     $sth->bindParam(":cid", $cid);
     $sth->execute();
     
     $res = $sth->fetchAll(PDO::FETCH_ASSOC);
     
-    if(empty($res)) {
+    if(empty($res)) { // Als het bericht niet is gevonden, stuur de client terug naar het overzicht
 	header("Location: /client/berichten");
     }
     
-    if($res[0]['gelezen'] == 0) {
+    if($res[0]['gelezen'] == 0) { // Als het bericht nog niet eerder gelezen was, nu op gelezen zetten.
 	$sth = $dbh->prepare("UPDATE berichten SET gelezen=1 WHERE id=:id");
 	$sth->bindParam(":id", $res[0]['id']);
 	$sth->execute();
     }
     
-    if($res[0]['afzender'] == 1) {
+    if($res[0]['afzender'] == 1) { // Als ID = 1, dan naam = beheerder
 	$naam = "Beheerder";
-    } else{
+    } else{ // Anders naam ophalen
 	$sth = $dbh->prepare("SELECT naam FROM user_data WHERE id=:afz");
 	$sth->bindParam(":afz", $res[0]['afzender']);
 	$sth->execute();

@@ -29,7 +29,7 @@ if(isset($_GET['status'])) {
     $statusText = "Bericht verzonden";
 }
 
-if(isset($_GET['naam'])) {
+if(isset($_GET['naam'])) { // Als de naam geset is, haal alleen berichten op van die persoon.
     $naam = $_GET['naam'];
     
     $sth = $dbh->prepare("SELECT id,titel,afzender,datum,gelezen,naam FROM berichten JOIN user_data ON afzender=user_id WHERE afzender=:name ORDER BY gelezen ASC, datum DESC");
@@ -37,7 +37,7 @@ if(isset($_GET['naam'])) {
     $sth->execute();
     
     $res = $sth->fetchAll(PDO::FETCH_ASSOC);
-} elseif(isset($_POST['search'])) {
+} elseif(isset($_POST['search'])) { // Als er op een titel/naam gezocht is, laat alleen die zien.
     $search = "%".$_POST['search']."%";
     
     $sth = $dbh->prepare("SELECT id,titel,afzender,gelezen,datum,naam FROM berichten JOIN user_data ON afzender=user_id WHERE ontvanger='1' AND (titel LIKE :search OR naam LIKE :search) ORDER BY gelezen ASC, datum DESC");
@@ -45,7 +45,7 @@ if(isset($_GET['naam'])) {
     $sth->execute();
     
     $res = $sth->fetchAll(PDO::FETCH_ASSOC);
-} else {
+} else { // Haal anders alles op
     $sth = $dbh->prepare("SELECT id,titel,afzender,datum,gelezen,naam FROM berichten JOIN user_data ON afzender=user_id WHERE ontvanger='1' ORDER BY gelezen ASC, datum DESC");
     $sth->execute();
     
@@ -80,7 +80,7 @@ if(isset($_GET['naam'])) {
 			<td class="center"><input type="checkbox" name="id[]" value="<?php echo($row['id']); ?>"/></td>
 			<td><a href="/admin/bericht/<?php echo($row['id']);?>"><?php echo($row['titel']);?></a></td>
 			<td><?php echo($row['naam']); ?></td>
-			<td class="center"><?php echo(date("d-m-Y H:i:s", strtotime($row['datum']))); ?></td>
+			<td class="center"><?php echo(date("d-m-Y H:i:s", strtotime($row['datum']))); ?></td> <!-- Formatteer de datum naar onze standaarden -->
 			<td class="center"><?php echo($row['gelezen'] == 1 ? "Ja" : "Nee"); ?></td>
 		    </tr>
 		<?php } ?>

@@ -5,7 +5,7 @@
  * @projectGroup SSJ
  */
 
-if(isset($_GET['id'])) {
+if(isset($_GET['id'])) { // Als er een ID is, haalt het bericht op.
     $id = $_GET['id'];
     $dbh = connectToDatabase();
     
@@ -15,13 +15,13 @@ if(isset($_GET['id'])) {
     
     $res = $sth->fetchAll(PDO::FETCH_ASSOC);
     
-    if($res[0]['gelezen'] == 0) {
+    if($res[0]['gelezen'] == 0) { // Als het bericht ongelezen was, zet de status op gelezen.
 	$sth = $dbh->prepare("UPDATE berichten SET gelezen=1 WHERE id=:id");
 	$sth->bindParam(":id", $res[0]['id']);
 	$sth->execute();
     }
     
-    if($res[0]['afzender'] == 1) {
+    if($res[0]['afzender'] == 1) { // Haal de naam op van de afzender
 	$naam = "Beheerder";
     } else{
 	$sth = $dbh->prepare("SELECT naam FROM user_data WHERE user_id=:afz");
@@ -47,7 +47,7 @@ if(isset($_GET['id'])) {
     </tr>
     <tr>
 	<td><b>Datum verstuurd:</b></td>
-	<td><?php echo(date("d/m/Y H:i:s", strtotime($res[0]['datum']))); ?></td>
+	<td><?php echo(date("d/m/Y H:i:s", strtotime($res[0]['datum']))); ?></td> <!-- Formatteer de datum volgens onze standaarden -->
     </tr>
     <tr>
 	<td><b>Inhoud:</b></td>

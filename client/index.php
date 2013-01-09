@@ -19,6 +19,19 @@ if(!file_exists(DOCROOT . 'client/templates/' . $page . '.php'))
 {
 	$page = 'home';
 }
+
+$unread = "";
+
+$dbh = connectToDatabase();
+
+$sth = $dbh->prepare("SELECT id FROM berichten WHERE ontvanger=:cid AND gelezen='0'");
+$sth->bindParam(":cid", $_SESSION['clientid']);
+$sth->execute();
+$count = $sth->rowCount();
+
+if($count > 0) {
+	$unread = " (".$count.")";
+}
 ?>
 <html>
 	<head>
@@ -38,8 +51,7 @@ if(!file_exists(DOCROOT . 'client/templates/' . $page . '.php'))
 				<div id="menu">
 					<ul>
 						<li><a href="/client/home">Home</a></li>
-						<li><a href="/client/agenda">Agenda</a></li>
-						<li><a href="/client/berichten">Berichten</a></li>
+						<li><a href="/client/berichten">Berichten<?php echo($unread);?></a></li>
 						<li class="login_menu_item">
 						    <a href="/">Homepagina</a>
 						    <a href="/client/logout">Uitloggen</a>

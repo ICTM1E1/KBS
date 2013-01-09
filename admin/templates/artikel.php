@@ -20,14 +20,14 @@ if (isset($_POST ['option']) && isset($_POST ['id'])) {
 	// gedrukt
 	$sth = $dbh->prepare("DELETE FROM article WHERE ID IN(" . $id . ")"); // Verwijder het artikel
 	$result = $sth->execute();
-	if ($result == true) {
+	if ($result == true) { // Als de query is gelukt, laat succes bericht zien.
 	    $style = 'message_success';
 	    $statusText = "Artikel(en) succesvol verwijderd.";
-	} else {
+	} else { // Anders faal bericht
 	    $style = 'message_error';
 	    $statusText = "Er is een fout opgetreden tijdens het verwijderen van het artikel, het artikel is niet verwijderd!";
 	}
-    } elseif ($_POST ['option'] == "Publiceer") {
+    } elseif ($_POST ['option'] == "Publiceer") {  // Publiceren
 	$sth = $dbh->prepare("UPDATE article SET published=1 WHERE ID IN (" . $id . ")");
 	$result = $sth->execute();
 	if ($result == true) {
@@ -37,7 +37,7 @@ if (isset($_POST ['option']) && isset($_POST ['id'])) {
 	    $style = 'message_error';
 	    $statusText = "Er is een fout opgetreden tijdens het publiceren van het artikel, het artikel is niet gepubliceerd!";
 	}
-    } elseif ($_POST ['option'] == "Depubliceer") {
+    } elseif ($_POST ['option'] == "Depubliceer") {  // Depubliceren
 	$sth = $dbh->prepare("UPDATE article SET published=0 WHERE ID IN (" . $id . ")");
 	$result = $sth->execute();
 	if ($result == true) {
@@ -50,7 +50,7 @@ if (isset($_POST ['option']) && isset($_POST ['id'])) {
     }
 }
 
-if (isset($_GET ["case"])) {
+if (isset($_GET ["case"])) { // Als de gebruiker vanaf een andere pagina komt waar een query is uitgevoerd.
     if ($_GET ["case"] == "succes") {
 	$statusText = "Artikel(en) succesvol opgeslagen.";
 	$style = "message_success";
