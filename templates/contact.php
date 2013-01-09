@@ -5,39 +5,44 @@
  * @projectGroup SSJ
  */
 
-$dbh=  connectToDatabase();
+$dbh = connectToDatabase();
 
 //Het zelfafhandelende gedeelte, waarbij het formulier wordt getoond als nog niet op de verstuur-knop is gedrukt
-    if (isset($_POST["verstuur"])) {
-	//De attributen die worden opgeslagen vanuit het contactformulier, zodat in de e-mail die gestuurd wordt staat van wie het afkomstig is, wat het onderwerp is en wat de vraag is
-	$naam = $_POST['naam'];
-	$email = $_POST['email'];
-	$onderwerp = $_POST['onderwerp'];
-	$vraag = $_POST['vraag'];
+if (isset($_POST["verstuur"])) {
+    //De attributen die worden opgeslagen vanuit het contactformulier, zodat in de e-mail die gestuurd wordt staat van wie het afkomstig is, wat het onderwerp is en wat de vraag is
+    $naam = $_POST['naam'];
+    $email = $_POST['email'];
+    $onderwerp = $_POST['onderwerp'];
+    $vraag = $_POST['vraag'];
 
-	//Eigenaar's email, dus gerelateerde van Caspar (nu voor testen nog mijn e-mail
-	$to = EMAIL_KLANT;
-	$subject = 'Vraag van bezoeker ' . $naam;
+    //Eigenaar's email, dus gerelateerde van Caspar (nu voor testen nog mijn e-mail
+    $to = EMAIL_KLANT;
+    $subject = 'Vraag van bezoeker ' . $naam;
 
-	//Hier de info over de mail en de vraag
-	$message = 'Van: ' . $naam . "\n";
-	$message .= 'E-mail: ' . $email . "\n";
-	$message .= 'Onderwerp: ' . $onderwerp;
-	$message .= 'Vraag: <br>' . $vraag;
+    //Hier de info over de mail en de vraag
+    $message = 'Van: ' . $naam . "\n";
+    $message .= 'E-mail: ' . $email . "\n";
+    $message .= 'Onderwerp: ' . $onderwerp;
+    $message .= 'Vraag: <br>' . $vraag;
 
-	//$headers = 'From: '.$email."\r\n";
-	$headers = 'From: ' . EMAIL_KLANT . '\r\n';
-	$headers .= 'Reply-To: ' . $email . "\r\n";
+    //$headers = 'From: '.$email."\r\n";
+    $headers = 'From: ' . EMAIL_KLANT . '\r\n';
+    $headers .= 'Reply-To: ' . $email . "\r\n";
 
-	//De functie waarbij de mail verstuurd wordt, of niet verstuurd als de gegevens niet ingevuld of niet correct ingevuld zijn.
-	$mail_status = mail($to, $subject, $message, $headers);
-	if (!$mail_status) {
-	    echo '<div class="message_error"><p>Helaas, het versturen van de mail is mislukt</p></div>';
-	} else {
-	    echo '<div class="message_success"><p>Geslaagd, de mail is verstuurd</p></div>';
-	}
+
+    //Hier de info over vanwaar de e-mail komt
+    $headers = 'From: ' . EMAIL_KLANT . '\r\n';
+    $headers .= 'Reply-To: ' . $email . "\r\n";
+
+    //De functie waarbij de mail verstuurd wordt, of niet verstuurd als de gegevens niet ingevuld of niet correct ingevuld zijn.
+    $mail_status = mail($to, $subject, $message, $headers);
+    if (!$mail_status) {
+	echo '<div class="message_error"><p>Helaas, het versturen van de mail is mislukt</p></div>';
+    } else {
+	echo '<div class="message_success"><p>Geslaagd, de mail is verstuurd</p></div>';
     }
 
+    //Als klant ingelogd is, dan worden automatisch e-mail en naam ingevoerd.
     if (isset($_SESSION['clientid'])) {
 	$userinfosql = "SELECT * 
 		    FROM user_data
@@ -77,7 +82,8 @@ $dbh=  connectToDatabase();
 	    </table>
 	</form>
 
-    <?php } else { ?><!-- Het contactformulier waarbij je de Naam, het E-mailadres, het Onderwerp en de Vraag in kan vullen en op Versturen kan drukken. -->
+    <?php } else { ?>
+	<!-- Het contactformulier waarbij je de Naam, het E-mailadres, het Onderwerp en de Vraag in kan vullen en op Versturen kan drukken. -->
 	<form method="post">
 	    <table>
 		<tr>
@@ -107,5 +113,4 @@ $dbh=  connectToDatabase();
 		</tr>
 	    </table>
 	</form>
-    <?php } ?>
-
+    <?php } }?>
