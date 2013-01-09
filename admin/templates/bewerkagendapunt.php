@@ -215,6 +215,10 @@ if(isset($_POST['save-agenda-point']))
 		{
 			$errors[] = 'U moet een geldige start datum opgeven';
 		}
+		if(strtotime($end_date) < strtotime($start_date))
+		{
+			$errors[] = 'De eind datum kan niet eerder zijn dan de start datum.';
+		}
 		$whole_day = isset($_POST['whole-day']) && $_POST['whole-day'] == 'yes' ? 'true':'false';
 		$service = $_POST['service'];
 		
