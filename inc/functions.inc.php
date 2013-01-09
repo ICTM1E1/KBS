@@ -459,19 +459,47 @@ function archivemonths($dmonth) {
 // function author: caspar crop
 function retreivearchive($dyear, $dmonth, $dbh) {
 
-
+	if($dmonth == 1){
+		$dmonth = 01;
+	}
+	if($dmonth == 2){
+		$dmonth = 02;
+	}
+	if($dmonth == 3){
+		$dmonth = 03;
+	}
+	if($dmonth == 4){
+		$dmonth = 04;
+	}
+	if($dmonth == 5){
+		$dmonth = 05;
+	}
+	if($dmonth == 6){
+		$dmonth = 06;
+	}
+	if($dmonth == 7){
+		$dmonth = 07;
+	}
+	if($dmonth == 8){
+		$dmonth = 08;
+	}
+	if($dmonth == 9){
+		$dmonth = 09;
+	}
+	
 
     // sql statement (retreiving the published news and order it by date it was
     // last changed at)
     $sql = "SELECT ID, date_edited, title, text, published
 	    FROM article A
-	    WHERE (date_edited LIKE  '%:year-:month-%') AND (published=1)
+	    WHERE (date_edited LIKE :year_month) AND (published=1)
 	    AND (A.cat_id=(SELECT C.cat_id FROM category C WHERE name='Actualiteiten'))   
 	    ORDER BY date_edited DESC";
     // executing the query
     $sth = $dbh->prepare($sql);
-    $sth->bindParam(":year", $dyear);
-    $sth->bindParam(":month", $dmonth);
+	$date=$dyear."-".$dmonth."%";
+	$sth->bindParam(":year_month",$date);
+	//$sth->bindParam(":month", $dmonth);
     $sth->execute();
     // getting results in from the query
     $result = $sth->fetchAll(PDO::FETCH_ASSOC);
