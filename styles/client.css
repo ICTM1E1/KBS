@@ -120,6 +120,17 @@ table.simple-table tr:nth-child(even) {
     width: 100%;
 }
 
+#return {
+	top: 25%;
+	width: 200px;
+	padding: 5px;
+	text-align: center;
+	margin: auto;
+	margin-top:10px;
+	position: relative;
+	border: 1px solid #ccc;
+}
+
 #wrapper {
     min-width: 1080px;
     width: 100%;

@@ -89,7 +89,8 @@ if(isset($_POST['submit']))
 				</table>
 			</form>
 		</div>
-		<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
-		<center><a href="/">Terug naar de homepagina</a></center>
+		<div id="return">
+			<a href="/">Terug naar de homepagina</a>
+		</div>
 	</body>
 </html>
