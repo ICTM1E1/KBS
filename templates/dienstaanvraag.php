@@ -92,7 +92,7 @@ if (isset($_POST['vraagaan']))
     {
     	$errors[] = 'U moet een geldige datum opgeven.';
     } 
-    else if(strlen($explode_date) == 4)
+    else if(strlen($explode_date[0]) == 4)
     {
     	$errors[] = 'U moet een geldige datum opgeven.';
     }
