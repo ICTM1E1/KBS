@@ -34,7 +34,7 @@ if(isset($_POST['submit']))
             $user = $_POST['login'];   
             $pass = hash('sha256', $_POST['password']);
 	    
-            $sth = $dbh->prepare("SELECT id FROM users WHERE username=:user AND password=:pass");
+            $sth = $dbh->prepare("SELECT id FROM users WHERE username=:user AND password=:pass AND admin=0");
             $sth->bindParam(":user", $user);
             $sth->bindParam(":pass", $pass);
             $sth->execute();
@@ -89,5 +89,7 @@ if(isset($_POST['submit']))
 				</table>
 			</form>
 		</div>
+		<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+		<center><a href="/">Terug naar de homepagina</a></center>
 	</body>
 </html>

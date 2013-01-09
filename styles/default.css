@@ -118,6 +118,10 @@ table input[type="text"] {
     height: 36px;
 }
 
+#menu ul li.login_menu_item {
+	padding: 0px;
+}
+
 #menu ul li a {
     color: #fff;
 }
