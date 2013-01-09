@@ -42,16 +42,31 @@ if (isset($_POST["verstuur"])) {
 	echo '<div class="message_success"><p>Geslaagd, de mail is verstuurd</p></div>';
     }
 
+
+/*
+ * @author Caspar Crop
+ * @klas ICT M1 E1
+ * @projectGroup SSJ
+ */    
+    
     //Als klant ingelogd is, dan worden automatisch e-mail en naam ingevoerd.
+
     if (isset($_SESSION['clientid'])) {
+	
+	//sql query for retreiving the user's data
 	$userinfosql = "SELECT * 
 		    FROM user_data
 		    WHERE user_id =:id";
+	//preparing the sql statement
 	$sth = $dbh->prepare($userinfosql);
+	//binding the variables
 	$sth->bindParam(":id", $_SESSION['clientid']);
+	//executing the query
 	$sth->execute();
+	//retreiving the data collected by the query
 	$res = $sth->fetch(PDO::FETCH_ASSOC);
 	?>
+	<!--Contact-form-->
 	<form method="post">
 	    <table>
 		<tr>
@@ -81,6 +96,14 @@ if (isset($_POST["verstuur"])) {
 		</tr>
 	    </table>
 	</form>
+
+<?php
+/*
+ * @author Maarten Engels
+ * @klas ICT M1 E1
+ * @projectGroup SSJ
+ */
+?>
 
     <?php } else { ?>
 	<!-- Het contactformulier waarbij je de Naam, het E-mailadres, het Onderwerp en de Vraag in kan vullen en op Versturen kan drukken. -->

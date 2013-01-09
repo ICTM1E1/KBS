@@ -30,6 +30,7 @@ $datetoday = date("Y");
 		//go through every month
 		for ($im = 12; $im >= 1; $im = $im - 1) {
 		    $dmonth = $im;
+		    print_r($dmonth);
 		    //retreive articles from selected month
 		    $result = retreivearchive($dyear, $dmonth, $dbh);
 		    //don't show month if there are no articles published in that month
