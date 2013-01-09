@@ -38,15 +38,29 @@ $dbh=  connectToDatabase();
 	}
     }
 
+/*
+ * @author Caspar Crop
+ * @klas ICT M1 E1
+ * @projectGroup SSJ
+ */    
+    
+    //check if the client is logged in
     if (isset($_SESSION['clientid'])) {
+	
+	//sql query for retreiving the user's data
 	$userinfosql = "SELECT * 
 		    FROM user_data
 		    WHERE user_id =:id";
+	//preparing the sql statement
 	$sth = $dbh->prepare($userinfosql);
+	//binding the variables
 	$sth->bindParam(":id", $_SESSION['clientid']);
+	//executing the query
 	$sth->execute();
+	//retreiving the data collected by the query
 	$res = $sth->fetch(PDO::FETCH_ASSOC);
 	?>
+	<!--Contact-form-->
 	<form method="post">
 	    <table>
 		<tr>
@@ -76,7 +90,13 @@ $dbh=  connectToDatabase();
 		</tr>
 	    </table>
 	</form>
-
+<?php
+/*
+ * @author Maarten Engels
+ * @klas ICT M1 E1
+ * @projectGroup SSJ
+ */
+?>
     <?php } else { ?><!-- Het contactformulier waarbij je de Naam, het E-mailadres, het Onderwerp en de Vraag in kan vullen en op Versturen kan drukken. -->
 	<form method="post">
 	    <table>
