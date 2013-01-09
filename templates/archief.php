@@ -24,7 +24,7 @@ $datetoday = date("Y");
 	<ul>
 	    <?php
 	    //go through and display every year
-	    for ($iy = $datetoday; $iy >= 2013; $iy = $iy - 1) {
+	    for ($iy = $datetoday; $iy >= 2012; $iy = $iy - 1) {
 		$dyear = $iy;
 		echo ("<div id='archiveyear'><h2>" . $dyear . "</h2>");
 		//go through every month
@@ -33,9 +33,10 @@ $datetoday = date("Y");
 		    //retreive articles from selected month
 		    $result = retreivearchive($dyear, $dmonth, $dbh);
 		    //don't show month if there are no articles published in that month
-		    if (!count($result) == 0) {
+		    if (count($result) != 0) {
 			echo("<div id='archivemonth'><h3>" . archivemonths($dmonth) . "</h3>");
 			//display every row of articles for this month
+			
 			foreach ($result as $row) {
 			    ?>
 			    <!--Show link linking to the article clicked on-->

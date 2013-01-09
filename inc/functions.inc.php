@@ -532,13 +532,14 @@ function retreivearchive($dyear, $dmonth, $dbh)
 	// last changed at)
 	$sql = "SELECT ID, date_edited, title, text, published
 	    FROM article A
-	    WHERE (date_edited LIKE  '%:year-:month-%') AND (published=1)
+	    WHERE (date_edited LIKE :year_month) AND (published=1)
 	    AND (A.cat_id=(SELECT C.cat_id FROM category C WHERE name='Actualiteiten'))   
 	    ORDER BY date_edited DESC";
 	// executing the query
 	$sth = $dbh->prepare($sql);
-	$sth->bindParam(":year", $dyear);
-	$sth->bindParam(":month", $dmonth);
+	$date=$dyear."-".$dmonth."%";
+	$sth->bindParam(":year_month",$date);
+	//$sth->bindParam(":month", $dmonth);
 	$sth->execute();
 	// getting results in from the query
 	$result = $sth->fetchAll(PDO::FETCH_ASSOC);
