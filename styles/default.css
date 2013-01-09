@@ -52,6 +52,7 @@ a:hover {
 table {
     width: 100%;
     border: 1px solid #7a8bac;
+    margin-bottom: 2px;
 }
 
 table tr th {
@@ -381,9 +382,6 @@ table input[type="text"] {
 }
 
 .page {
-    border-color: #768093 transparent;
-    border-style: solid;
-    border-width: 8px;
     text-align: left;
     overflow: auto;
 }

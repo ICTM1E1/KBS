@@ -9,8 +9,19 @@ $dbh = connectToDatabase();
 $style = "";
 $statusText = "";
 
-if(isset($_POST['submit'])) {
-    
+if(isset($_POST['submit']) && isset($_POST['id'])) {
+    $id = $_POST ['id']; // Haal de ID array op
+    $id = implode(',', $_POST ['id']); // Zet de array om in een string, uit elkaar gehouden door ,
+    $id = mysql_real_escape_string($id); // Maak de string veilig voor de database
+    $sth = $dbh->prepare("DELETE FROM berichten WHERE id IN(" . $id . ")"); // Verwijder het bericht
+    $result = $sth->execute();
+    if ($result == true) {
+	$style = 'message_success';
+	$statusText = "Bericht(en) succesvol verwijderd.";
+    } else {
+	$style = 'message_error';
+	$statusText = "Er is een fout opgetreden tijdens het verwijderen van het bericht.";
+    }
 }
 
 if(isset($_GET['status'])) {
@@ -29,7 +40,7 @@ if(isset($_GET['naam'])) {
 } elseif(isset($_POST['search'])) {
     $search = "%".$_POST['search']."%";
     
-    $sth = $dbh->prepare("SELECT id,titel,afzender,gelezen,datum,naam FROM berichten JOIN user_data ON afzender=user_id WHERE ontvanger='1' AND titel LIKE :search ORDER BY gelezen ASC, datum DESC");
+    $sth = $dbh->prepare("SELECT id,titel,afzender,gelezen,datum,naam FROM berichten JOIN user_data ON afzender=user_id WHERE ontvanger='1' AND (titel LIKE :search OR naam LIKE :search) ORDER BY gelezen ASC, datum DESC");
     $sth->bindParam(":search", $search);
     $sth->execute();
     
@@ -48,7 +59,7 @@ if(isset($_GET['naam'])) {
 
 <form action="" method="post">
     <input type="button" onclick="window.location = '/admin/berichten/nieuw'" value="Nieuw"/>
-    <input type="submit" name="option" value="Verwijderen"/>
+    <input type="submit" name="submit" value="Verwijderen"/>
     <br/><br/>
     <input type="text" name="search" placeholder="Zoeken..."/>
     <br/><br/>

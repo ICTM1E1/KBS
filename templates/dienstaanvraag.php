@@ -212,7 +212,109 @@ if (isset($_POST['vraagaan']))
 		<?php endforeach;?>
 	</div><br />
 <?php endif;?>
-<?php if(!isset($_GET['status'])):?>
+<?php if(!isset($_GET['status'])):
+//if the user is logged in, the following is done
+if(isset($_SESSION['clientid'])){
+    $userinfosql = "SELECT * 
+		    FROM user_data
+		    WHERE user_id =:id";
+    $sth = $dbh->prepare($userinfosql);
+    $sth->bindParam(":id", $_SESSION['clientid']);
+    $sth->execute();
+    $res = $sth->fetch(PDO::FETCH_ASSOC);
+      
+    ?>
+    <form action="" method="POST">
+	<table style="width: 100%;">
+		<tr>
+			<td>Naam:</td>
+			<td><input type="text" name="name" value="<?php echo $res['naam'] ?>" /></td>
+		</tr>
+		<tr>
+			<td>E-mail</td>
+			<td><input type="text" name="email" value="<?php echo $res['email']?>" /></td>
+		</tr>
+		<tr>
+			<td>Adres</td>
+			<td><input type="text" name="address" value="<?php echo $res['adres']?>" /></td>
+		</tr>
+		<tr>
+			<td>Postcode</td>
+			<td><input type="text" name="zipcode" maxlength="6" value="<?php echo $res['postcode']?>" />&nbsp;<small>(1234AA)</small></td>
+		</tr>
+		<tr>
+			<td>Woonplaats</td>
+			<td><input type="text" name="residence" value="<?php echo $res['woonplaats']?>" /></td>
+		</tr>
+		<tr>
+			<td>Telefoonnummer</td>
+			<td><input type="text" name="telephone" value="<?php echo $res['telefoon']?>" />&nbsp;<small>(050-1234567)</small></td>
+		</tr>
+		<tr>
+			<td>Mobiel</td>
+			<td><input type="text" name="mobile" value="<?php echo $res['mobiel']?>" />&nbsp;<small>(06-12345678)</small></td>
+		</tr>
+		<tr>
+			<td>Datum</td>
+			<td><input type="text" name="date" value="<?php echo isset($date)?$date:date('d-m-Y');?>" class="datepicker" /></td>
+		</tr>
+		<tr>
+			<td>Begintijd en eindtijd</td>
+			<td>
+				<select name="start_time">
+					<?php for($i = 0; $i <= 47; $i += 1):?>
+						<?php $half = ($i % 2 != 0)?'30':'00';?>
+						<?php $hour = floor($i / 2);?>
+						<?php $hour = date('H', mktime($hour,0,0, 1, 1, 1970));?>
+						<option <?php echo isset($start_time) && ($hour . ':' . $half == $start_time) ? 'selected="selected"':'';?> value="<?php echo $hour . ':' . $half; ?>"><?php echo $hour . ':' . $half; ?></option>
+					<?php endfor;?>
+				</select>
+				<select name="end_time">
+					<?php for($i = 0; $i <= 47; $i += 1):?>
+						<?php $half = ($i % 2 != 0)?'30':'00';?>
+						<?php $hour = floor($i / 2);?>
+						<?php $hour = date('H', mktime($hour,0,0, 1, 1, 1970));?>
+						<option <?php echo isset($end_time) && ($hour . ':' . $half == $end_time) ? 'selected="selected"':'';?> value="<?php echo $hour . ':' . $half; ?>"><?php echo $hour . ':' . $half; ?></option>
+					<?php endfor;?>
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td>Dienst:</td>
+			<td><strong><?php echo $dienst;?></strong></td>
+		</tr>
+		<tr>
+			<td>Locatie</td>
+			<td><input type="text" name="location" value="<?php echo isset($location)?$location:''?>" /></td>
+		</tr>
+		<tr>
+			<td>Beschrijving:</td>
+		</tr>
+		<tr>
+			<td colspan="2">
+				<textarea class="no-editor" name="description"><?php echo isset($description)?$description:''?></textarea>
+			</td>
+		</tr>
+		<tr>
+			<td><input type="hidden" name="service" value=""></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td><input type="submit" name="vraagaan" value="Vraag aan!" /></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td colspan="2"><small>Alle velden zijn verplicht<sup>1</sup></small></td>
+		</tr>
+		<tr>
+			<td colspan="2"><small><sup>1</sup>U hoeft maar 1 nummer op te geven, telefoon- of mobiel nummer</small></td>
+		</tr>
+	</table>
+	<input type="hidden" class="date_today" value="<?php echo date('m/d/Y');?>" />
+</form>
+<?php
+}else{?>	
+	
 <form action="" method="POST">
 	<table style="width: 100%;">
 		<tr>
@@ -301,7 +403,7 @@ if (isset($_POST['vraagaan']))
 	</table>
 	<input type="hidden" class="date_today" value="<?php echo date('m/d/Y');?>" />
 </form>
-<?php else:?>
+<?php }else:?>
 	<?php if($_GET['status'] == 'gelukt'):?>
 		<div class="message_success">
 			<p>De aanvraag is gelukt. U ontvangt een mail ter bevestiging met de ingevulde gegevens</p>

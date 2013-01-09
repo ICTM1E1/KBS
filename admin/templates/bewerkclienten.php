@@ -26,8 +26,29 @@ if(isset($_POST['submit'])) {
     if($id == -1) {
 	$sth = $dbh->prepare("INSERT INTO users (username, password) VALUES(:user, :pass)");
 	$sth->bindParam(":user", $user);
-	$pass = generatePassword(6);
-	// MAAK MAIL
+	$pass = generatePassword(8);
+	
+	$to = $email;
+	$subject = "Account aangemaakt voor u";
+	
+	$message = "
+	    Geachte heer/mevrouw,<br/><br/>
+	    Er is voor u op de website ".SERVERPATH." een account aangemaakt door de beheerder.<br/><br/>
+	    U kunt met dit account corresponderen met uw advocaat/jurist.<br/>
+	    Inloggen is mogelijk via de website.<br/><br/>
+	    Uw gebruikersnaam is: ".$user."<br/>
+	    en uw wachtwoord is: ".$pass."<br/><br/>
+	    Berg dit wachtwoord op een veilige plek op.<br/><br/>
+	    Met vriendelijke groet,<br/>
+	    ".WEBSITE_NAAM."
+	";
+
+	$headers  = 'MIME-Version: 1.0' . "\r\n";
+	$headers .= 'Content-type: text/html; charset=utf-8' . "\r\n";
+	$headers .= 'To: ' . $name . ' <' . $email . '>' . "\r\n";
+	$headers .= 'From: ' . WEBSITE_NAAM . ' <' . EMAIL_AFZENDER . '>' . "\r\n";
+	
+	mail($to, $subject, $message, $headers);
 
 	$tmp = hash('sha256', $pass);
 	$sth->bindParam(":pass", $tmp);

@@ -33,7 +33,7 @@ $datetoday = date("Y");
 		    //retreive articles from selected month
 		    $result = retreivearchive($dyear, $dmonth, $dbh);
 		    //don't show month if there are no articles published in that month
-		    if (count($result) != 0) {
+		    if (!count($result) == 0) {
 			echo("<div id='archivemonth'><h3>" . archivemonths($dmonth) . "</h3>");
 			//display every row of articles for this month
 			foreach ($result as $row) {

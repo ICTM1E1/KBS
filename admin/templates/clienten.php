@@ -68,18 +68,43 @@ if (isset($_POST['option']) && isset($_POST['id'])) {
 	foreach($IDs as $row) {
 	    $pw = "";
 	    
-	    $sth = $dbh->prepare("SELECT email FROM user_data WHERE user_id=:id");
+	    $sth = $dbh->prepare("SELECT email,naam FROM user_data WHERE user_id=:id");
 	    $sth->bindParam(":id", $row);
 	    $sth->execute();
 	    $res = $sth->fetchAll(PDO::FETCH_ASSOC);
-	    $email = $res[0];
+	    $email = $res[0]['email'];
+	    $naam = $res[0]['naam'];
 	    
-	    mail($email,"Uw wachtwoord is gereset","Blah");
+	    $pass = generatePassword();
 	    
-	    $sth = $dbh->prepare("UPDATE users SET password=:pw WHERE id=:id");
-	    $sth->bindParam(":pw", $pw);
-	    $sth->bindParam(":id", $row);
-	    //$sth->execute();
+	    $to = $email;
+	    $subject = "Uw wachtwoord is gereset";
+
+	    $message = "
+		Geachte heer/mevrouw,<br/><br/>
+		De beheerder van de website ".SERVERPATH." heeft uw wachtwoord zojuist gereset.<br/><br/>
+		Uw nieuwe wachtwoord is: ".$pass."<br/>
+		Inloggen is mogelijk via de website.<br/><br/>
+		Berg dit wachtwoord op een veilige plek op.<br/><br/>
+		Met vriendelijke groet,<br/>
+		".WEBSITE_NAAM."
+	    ";
+
+	    $headers  = 'MIME-Version: 1.0' . "\r\n";
+	    $headers .= 'Content-type: text/html; charset=utf-8' . "\r\n";
+	    $headers .= 'To: ' . $naam . ' <' . $email . '>' . "\r\n";
+	    $headers .= 'From: ' . WEBSITE_NAAM . ' <' . EMAIL_AFZENDER . '>' . "\r\n";
+
+	    if(mail($to, $subject, $message, $headers)) {
+		$pw = hash("sha256", $pass);
+		$sth = $dbh->prepare("UPDATE users SET password=:pw WHERE id=:id");
+		$sth->bindParam(":pw", $pw);
+		$sth->bindParam(":id", $row);
+		$sth->execute();
+	    } else{
+		$style = "message_error";
+		$statusText = "Resetten van wachtwoorden ging mis op gebruiker ".$naam;
+	    }
 	}
     }
 }?>

@@ -7,6 +7,7 @@
 
 $style = "";
 $statusText = "";
+$naam = "";
 
 if(isset($_GET['status'])) {
     $titel = $_SESSION['msg_titel'];
@@ -14,7 +15,7 @@ if(isset($_GET['status'])) {
     $bericht = $_SESSION['msg_bericht'];
     
     $style = "message_error";
-    $statusText = "Versturen is mislukt.";
+    $statusText = "Versturen is mislukt. Controleer de gebruikersnaam.";
 } else {
     $titel = "";
     $bericht = "";
@@ -55,10 +56,8 @@ if(isset($_POST['submit'])) {
     }
 }
 
-if(isset($_GET['naam'])) {
+if(isset($_GET['naam']) || empty($naam)) {
     $naam = $_GET['naam'];
-} else {
-    $naam = "";
 }
 
 ?>

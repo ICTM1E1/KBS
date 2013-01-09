@@ -525,15 +525,20 @@ function archivemonths($dmonth)
 // function author: caspar crop
 function retreivearchive($dyear, $dmonth, $dbh)
 {
+	
+	
+	
 	// sql statement (retreiving the published news and order it by date it was
 	// last changed at)
-	$sql = "SELECT A.ID, A.date_edited, A.title, A.TEXT, A.published
-	    FROM article A JOIN category C ON A.cat_id = C.cat_id
-	    WHERE (name='Actualiteiten' AND A.published =1)
-		    AND (A.date_edited LIKE  '%$dyear-$dmonth-%')
+	$sql = "SELECT ID, date_edited, title, text, published
+	    FROM article A
+	    WHERE (date_edited LIKE  '%:year-:month-%') AND (published=1)
+	    AND (A.cat_id=(SELECT C.cat_id FROM category C WHERE name='Actualiteiten'))   
 	    ORDER BY date_edited DESC";
 	// executing the query
 	$sth = $dbh->prepare($sql);
+	$sth->bindParam(":year", $dyear);
+	$sth->bindParam(":month", $dmonth);
 	$sth->execute();
 	// getting results in from the query
 	$result = $sth->fetchAll(PDO::FETCH_ASSOC);
