@@ -313,7 +313,7 @@ function getAgendaMonth($month = false, $year = false)
 		$data .= '<tr>';
 		foreach ($week as $date => $day)
 		{
-			$is_current_month = ($day['month'] == $month) ? true : false;
+			$is_current_month = ($day['month'] == date('m')) ? true : false;
 			$is_next_month = ($day['month'] == $next_month) ? true : false;
 			
 			$day_name = ucFirst(strftime('%A', mktime(0, 0, 0, $day['month'], $day['day'], $day['year'])));
