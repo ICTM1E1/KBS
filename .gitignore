@@ -2,7 +2,7 @@
 ## Project
 #################
 inc/config.inc.php
-.htaccess
+#.htaccess
 
 nbproject/
 eriktest
