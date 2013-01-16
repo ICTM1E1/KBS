@@ -61,12 +61,12 @@ if(isset($_GET['naam'])) { // Als de naam geset is, haal alleen berichten op van
     <input type="button" onclick="window.location = '/admin/berichten/nieuw'" value="Nieuw"/>
     <input type="submit" name="submit" value="Verwijderen"/>
     <br/><br/>
-    <input type="text" name="search" placeholder="Zoeken..."/>
-    <br/><br/>
     <?php 
 	if(empty($res)) {
 	    echo("Geen berichten om weer te geven.");
 	    } else { ?>
+    <input type="text" name="search" placeholder="Zoeken..."/>
+    <br/><br/>
 		<table>
 		    <tr>
 			<td class="center"><input type="checkbox" id="checkall" value=""/></td>

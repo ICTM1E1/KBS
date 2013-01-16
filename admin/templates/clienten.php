@@ -148,7 +148,7 @@ if (isset($_POST['option']) && isset($_POST['id'])) {
 	    <td><?php echo($row['naam']); ?></td>
 	    <td><?php echo($row['email']); ?></td>
 	    <td><a href="/admin/berichten/<?php echo($row['id']);?>">Berichten</a> <?php echo($unread > 0 ? "<b>(".$unread.")</b>" : ""); ?> </td>
-	    <td><?php echo("<a href=/admin/berichten/nieuw/".$row['username'].">(plaatje)</a>"); ?>
+	    <td><?php echo("<a href=/admin/berichten/nieuw/".$row['username'].">Maak nieuw bericht</a>"); ?>
 	</tr>
     
     <?php

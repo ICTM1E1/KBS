@@ -49,12 +49,12 @@ if(isset($_POST['search'])) {
 <form action="" method="post">
     <input type="button" onclick="window.location = '/client/berichten/nieuw'" value="Nieuw"/>
     <br/><br/>
-    <input type="text" name="search" placeholder="Zoeken..."/>
-    <br/><br/>
     <?php 
 	if(empty($res)) {
 	    echo("Geen berichten om weer te geven.");
 	    } else { ?>
+    <input type="text" name="search" placeholder="Zoeken..."/>
+    <br/><br/>
 		<table>
 		    <tr>
 			<th class="center">Titel</th>
