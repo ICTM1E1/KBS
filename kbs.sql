@@ -199,11 +199,6 @@ CREATE TABLE IF NOT EXISTS `dienst_aanvragen` (
 -- Gegevens worden uitgevoerd voor tabel `dienst_aanvragen`
 --
 
-INSERT INTO `dienst_aanvragen` (`id`, `naam`, `email`, `adres`, `postcode`, `woonplaats`, `telefoon`, `mobiel`, `datum`, `start_tijd`, `eind_tijd`, `dienst_id`, `status`, `beschrijving`, `locatie`) VALUES
-(1, 'Robert-John', 'rjvandoesburg@gmail.com', 'eurosingel 40', '8253EB', 'Dronten', '0321-380322', '', '0000-00-00', '01:30:00', '05:00:00', 9, 'aangevraagd', '', ''),
-(5, 'Robert-John', 'rj@exed.nl', 'aasd', '8253EB', 'dron', '', '06-11118353', '2013-01-06', '04:30:00', '02:00:00', 9, 'goedgekeurd', 'test', ''),
-(8, 'Robert-John', 'rjvandoesburg@gmail.com', 'Eurosingel 40', '8253EB', 'Dronten', '', '06-11118353', '2013-01-08', '02:30:00', '04:30:00', 9, 'aangevraagd', 'dit is een beschrijving', 'Zwolle');
-
 -- --------------------------------------------------------
 
 --
